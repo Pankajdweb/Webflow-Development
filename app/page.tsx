@@ -30,8 +30,8 @@ export default async function Home() {
           <div className={styles.items}>
             {data.collections?.map((item: any) => (
               <Link 
-                href={`/collection/${item._id}`} 
-                key={item._id} 
+                href={`/collection/${item.id}`} 
+                key={item.id} 
                 className={styles.itemLink}
               >
                 <div className={styles.item}>

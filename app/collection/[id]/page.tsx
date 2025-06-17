@@ -21,11 +21,12 @@ export default async function CollectionPage({ params }: { params: { id: string 
         </Link>
         
         <div className={styles.apiData}>
-          <h2>Collection Items</h2>
+          <h2>{data.collection?.displayName}</h2>
           <div className={styles.items}>
             {data.items?.map((item: any) => (
-              <div key={item._id} className={styles.item}>
-                <h3>{item.name || 'Untitled'}</h3>
+              <div key={item.id} className={styles.item}>
+                <h3>{item.fieldData?.name || item.name || item.displayName || 'Untitled'}</h3>
+                {item.fieldData?.["faq-answer"] && <p>Slug: {item.fieldData["faq-answer"]}</p>}
                 {item.slug && <p>Slug: {item.slug}</p>}
                 {item.created_on && (
                   <p>Created: {new Date(item.created_on).toLocaleDateString()}</p>
