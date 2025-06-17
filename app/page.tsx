@@ -25,6 +25,12 @@ export default async function Home() {
           priority
         />
         
+        <div className={styles.navigation}>
+          <Link href="/scraper" className={styles.scraperLink}>
+            🕷️ Web Scraper
+          </Link>
+        </div>
+        
         <div className={styles.apiData}>
           <h2>Webflow Collection Data</h2>
           <div className={styles.items}>

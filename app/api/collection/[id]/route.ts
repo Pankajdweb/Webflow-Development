@@ -9,7 +9,7 @@ export async function GET(
     // Fetch collection metadata
     const collectionResponse = await fetch(`https://api.webflow.com/v2/collections/${params.id}`, {
       headers: {
-        'Authorization': 'Bearer b7ad64d73b538d78b45df24f402d0ee9c88b9c8f29f124a39ed2173fb36f89c5',
+        'Authorization': 'Bearer d8f6b3d6366234de65f89f363c9f110a218b02014496727d73ebe14a675213d9',
         'accept-version': '2.0.0'
       }
     });
@@ -17,7 +17,7 @@ export async function GET(
     // Fetch collection items
     const itemsResponse = await fetch(`https://api.webflow.com/v2/collections/${params.id}/items`, {
       headers: {
-        'Authorization': 'Bearer b7ad64d73b538d78b45df24f402d0ee9c88b9c8f29f124a39ed2173fb36f89c5',
+        'Authorization': 'Bearer d8f6b3d6366234de65f89f363c9f110a218b02014496727d73ebe14a675213d9',
         'accept-version': '2.0.0'
       }
     });

@@ -108,6 +108,32 @@ a.secondary {
   flex-shrink: 0;
 }
 
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.scraperLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.scraperLink:hover {
+  background: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
@@ -212,7 +238,21 @@ a.secondary {
 }
 
 .status {
-  font-weight: 500;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.875rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.readyStatus {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.875rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .error {
@@ -236,6 +276,14 @@ a.secondary {
   
   .item p {
     color: #ccc;
+  }
+  
+  .status {
+    color: #999;
+  }
+  
+  .readyStatus {
+    color: #999;
   }
 }
 
@@ -276,4 +324,818 @@ a.secondary {
   .backButton:hover {
     background: rgba(255, 255, 255, 0.15);
   }
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  color: #333;
+}
+
+.statusIndicator {
+  margin-top: 0.5rem;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadge.draft {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.statusBadge.published {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.closeButton:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.toggleLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.toggleContainer {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toggleButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #f5f5f5;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.toggleButton:hover:not(:disabled) {
+  background: #e5e5e5;
+}
+
+.toggleButton.active {
+  background: #0070f3;
+  color: white;
+}
+
+.toggleButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.cancelButton:hover {
+  background: #e5e5e5;
+}
+
+.saveButton {
+  background: #0070f3;
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.saveButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modal {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  
+  .modalHeader {
+    border-bottom-color: #333;
+  }
+  
+  .modalHeader h3 {
+    color: #fff;
+  }
+  
+  .closeButton {
+    color: #ccc;
+  }
+  
+  .closeButton:hover {
+    background: #333;
+    color: #fff;
+  }
+  
+  .formGroup label {
+    color: #fff;
+  }
+  
+  .formInput,
+  .formTextarea {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+  }
+  
+  .formInput:focus,
+  .formTextarea:focus {
+    border-color: #0070f3;
+  }
+  
+  .modalFooter {
+    border-top-color: #333;
+  }
+  
+  .cancelButton {
+    background: #333;
+    color: #fff;
+  }
+  
+  .cancelButton:hover {
+    background: #444;
+  }
+  
+  .saveButton {
+    background: #0070f3;
+    color: white;
+  }
+  
+  .saveButton:hover:not(:disabled) {
+    background: #0056b3;
+  }
+  
+  .toggleLabel {
+    color: #fff;
+  }
+  
+  .toggleContainer {
+    border-color: #444;
+  }
+  
+  .toggleButton {
+    background: #333;
+    color: #ccc;
+  }
+  
+  .toggleButton:hover:not(:disabled) {
+    background: #444;
+  }
+  
+  .toggleButton.active {
+    background: #0070f3;
+    color: white;
+  }
+  
+  .statusBadge.draft {
+    background-color: #451a03;
+    color: #fbbf24;
+    border-color: #f59e0b;
+  }
+  
+  .statusBadge.published {
+    background-color: #064e3b;
+    color: #34d399;
+    border-color: #10b981;
+  }
+}
+
+.switchLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.switchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.switchInput {
+  display: none;
+}
+
+.switchToggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.switchToggle:hover {
+  background-color: #b3b3b3;
+}
+
+.switchInput:checked + .switchToggle {
+  background-color: #0070f3;
+}
+
+.switchInput:checked + .switchToggle:hover {
+  background-color: #0056b3;
+}
+
+.switchSlider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switchInput:checked + .switchToggle .switchSlider {
+  transform: translateX(26px);
+}
+
+.switchInput:disabled + .switchToggle {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.toggleButton.active {
+  background: #0070f3;
+  color: white;
+}
+
+.switchLabel {
+  color: #fff;
+}
+
+.switchToggle {
+  background-color: #555;
+}
+
+.switchToggle:hover {
+  background-color: #666;
+}
+
+.switchInput:checked + .switchToggle {
+  background-color: #0070f3;
+}
+
+.switchInput:checked + .switchToggle:hover {
+  background-color: #0056b3;
+}
+
+.switchSlider {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.statusBadge.draft {
+  background-color: #451a03;
+  color: #fbbf24;
+  border-color: #f59e0b;
+}
+
+.statusBadge.published {
+  background-color: #064e3b;
+  color: #34d399;
+  border-color: #10b981;
+}
+
+.switchLabel {
+  color: #fff;
+}
+
+.switchToggle {
+  background-color: #555;
+}
+
+.switchToggle:hover {
+  background-color: #666;
+}
+
+.switchInput:checked + .switchToggle {
+  background-color: #0070f3;
+}
+
+.switchInput:checked + .switchToggle:hover {
+  background-color: #0056b3;
+}
+
+.switchSlider {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.scrapingSection {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.scrapingSection h4 {
+  margin: 0 0 0.75rem 0;
+  color: #495057;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.scrapeInputGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.scrapeInput {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.scrapeInput:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.scrapeButton {
+  padding: 0.75rem 1rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.scrapeButton:hover:not(:disabled) {
+  background: #218838;
+}
+
+.scrapeButton:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.scrapeError {
+  margin: 0;
+  color: #dc3545;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.scraperContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.scraperContainer h1 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.scraperDescription {
+  margin: 0 0 2rem 0;
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.scrapingSection {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.scrapingSection h2 {
+  margin: 0 0 1rem 0;
+  color: #495057;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.scrapedDataSection {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  color: #495057;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.editInstructions {
+  margin: 0 0 1rem 0;
+  color: #666;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.clearButton {
+  padding: 0.5rem 1rem;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+  background: #5a6268;
+}
+
+.dataGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.dataField {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.dataField label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dataValue {
+  color: #fff;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.dataInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: white;
+  color: #333;
+}
+
+.dataInput:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.dataTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: white;
+  color: #333;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.dataTextarea:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.imageLink {
+  color: #0070f3;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.imageLink:hover {
+  text-decoration: underline;
+}
+
+.cmsSection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.sendToCMSButton {
+  padding: 1rem 2rem;
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 112, 243, 0.3);
+}
+
+.sendToCMSButton:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 112, 243, 0.4);
+}
+
+.sendToCMSButton:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cmsMessage {
+  margin: 1rem 0 0 0;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.cmsMessage.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.cmsMessage.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .switchSlider {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .scraperContainer {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  
+  .scraperContainer h1 {
+    color: #fff;
+  }
+  
+  .scraperDescription {
+    color: #ccc;
+  }
+  
+  .scrapingSection,
+  .scrapedDataSection {
+    background: #2a2a2a;
+    border-color: #444;
+  }
+  
+  .scrapingSection h2,
+  .scrapedDataSection h2 {
+    color: #fff;
+  }
+  
+  .dataField {
+    background: #333;
+    border-color: #444;
+  }
+  
+  .dataField label {
+    color: #ccc;
+  }
+  
+  .dataValue {
+    color: #fff;
+  }
+  
+  .dataInput,
+  .dataTextarea {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+  }
+  
+  .dataInput:focus,
+  .dataTextarea:focus {
+    border-color: #0070f3;
+  }
+  
+  .cmsSection {
+    border-top-color: #444;
+  }
+  
+  .scrapeInput {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+  }
+  
+  .scrapeInput:focus {
+    border-color: #0070f3;
+  }
+  
+  .statusBadge.draft {
+    background-color: #451a03;
+    color: #fbbf24;
+    border-color: #f59e0b;
+  }
+  
+  .editInstructions {
+    color: #ccc;
+  }
+}
+
+.debugSection {
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.debugSection h3 {
+  margin: 0 0 0.75rem 0;
+  color: #1976d2;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.fieldsList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.fieldItem {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #333;
 }

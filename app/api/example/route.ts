@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const response = await fetch('https://api.webflow.com/v2/sites/61c6dd98689f180cfcafdb4c/collections', {
+    const response = await fetch('https://api.webflow.com/v2/sites/6835ac0e320162939cd9c7ad/collections', {
       headers: {
-        'Authorization': 'Bearer b7ad64d73b538d78b45df24f402d0ee9c88b9c8f29f124a39ed2173fb36f89c5',
+        'Authorization': 'Bearer d8f6b3d6366234de65f89f363c9f110a218b02014496727d73ebe14a675213d9',
         'accept-version': '2.0.0'
       }
     });
