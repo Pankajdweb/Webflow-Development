@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import styles from '../page.module.css';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import styles from "../page.module.css";
+import Link from "next/link";
 
 export default function ScraperPage() {
-  const [scrapeUrl, setScrapeUrl] = useState('');
+  const [scrapeUrl, setScrapeUrl] = useState("");
   const [isScraping, setIsScraping] = useState(false);
   const [isSendingToCMS, setIsSendingToCMS] = useState(false);
-  const [scrapeError, setScrapeError] = useState('');
-  const [cmsMessage, setCmsMessage] = useState('');
+  const [scrapeError, setScrapeError] = useState("");
+  const [cmsMessage, setCmsMessage] = useState("");
   const [scrapedData, setScrapedData] = useState({
-    title: '',
-    shortDescription: '',
-    summary: '',
-    eligibility: '',
-    scope: '',
-    imageUrl: '',
-    openingDate: '',
-    closingDate: '',
-    duration: '',
-    mainBody: '',
-    fundingBody: '',
-    awardValue: '',
-    url: '',
-    order: 0
+    title: "",
+    shortDescription: "",
+    summary: "",
+    eligibility: "",
+    scope: "",
+    imageUrl: "",
+    openingDate: "",
+    closingDate: "",
+    duration: "",
+    mainBody: "",
+    fundingBody: "",
+    awardValue: "",
+    url: "",
+    order: 0,
   });
   const [collectionFields, setCollectionFields] = useState<any>(null);
 
@@ -39,7 +39,7 @@ export default function ScraperPage() {
           setCollectionFields(data.collection?.fields || []);
         }
       } catch (error) {
-        console.error('Error fetching collection structure:', error);
+        console.error("Error fetching collection structure:", error);
       }
     };
 
@@ -48,34 +48,38 @@ export default function ScraperPage() {
 
   const handleScrapeData = async () => {
     if (!scrapeUrl.trim()) {
-      setScrapeError('Please enter a URL to scrape');
+      setScrapeError("Please enter a URL to scrape");
       return;
     }
 
     setIsScraping(true);
-    setScrapeError('');
-    setCmsMessage('');
+    setScrapeError("");
+    setCmsMessage("");
 
     try {
       const apiKey = "633fbe32ec06f47512978e9b2607286d";
-      const proxyUrl = `https://api.scraperapi.com/?api_key=${apiKey}&url=${encodeURIComponent(scrapeUrl)}`;
+      const proxyUrl = `https://api.scraperapi.com/?api_key=${apiKey}&url=${encodeURIComponent(
+        scrapeUrl
+      )}`;
 
       const response = await fetch(proxyUrl);
-      
+
       if (!response.ok) {
-        throw new Error(`Failed to scrape data: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to scrape data: ${response.status} ${response.statusText}`
+        );
       }
 
       const htmlContent = await response.text();
-      
+
       // Parse the HTML content to extract data
       const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, 'text/html');
-      
+      const doc = parser.parseFromString(htmlContent, "text/html");
+
       // Extract title with span removal
       const titleEl = doc.querySelector("main h1.govuk-heading-l");
-      let cleanTexth1 = '';
-      
+      let cleanTexth1 = "";
+
       if (titleEl) {
         // Remove the span manually from HTML
         const innerWithoutSpan = titleEl.innerHTML
@@ -85,9 +89,9 @@ export default function ScraperPage() {
         // Create a temporary div to parse the cleaned string
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = innerWithoutSpan;
-        cleanTexth1 = tempDiv.textContent?.trim() || '';
+        cleanTexth1 = tempDiv.textContent?.trim() || "";
       }
-      
+
       // Extract other elements
       const summaryEl = doc.querySelector("main p.govuk-body");
       const openEl = doc.querySelector("main ul.govuk-list li:first-child");
@@ -104,30 +108,32 @@ export default function ScraperPage() {
 
       const summary = (summaryEl as HTMLElement)?.innerText?.trim() || "";
       const tabDatasummary = (tabEl as HTMLElement)?.innerText?.trim() || "";
-      const tabDataeligibility = (tabEligibility as HTMLElement)?.innerText?.trim() || "";
+      const tabDataeligibility =
+        (tabEligibility as HTMLElement)?.innerText?.trim() || "";
       const tabDatascope = (tabScope as HTMLElement)?.innerText?.trim() || "";
-      
+
       // Update scraped data
       setScrapedData({
-        title: cleanTexth1 || 'Untitled',
-        shortDescription: summary || 'No description available',
-        summary: tabDatasummary || 'No tabDatasummary available',
-        eligibility: tabDataeligibility || 'No tabDataeligibility available',
-        scope: tabDatascope || 'No tabDatascope available',
-        imageUrl: '',
-        openingDate: openingDate || 'No openingDate available',
-        closingDate: closingDate || 'No closingDate available',
-        duration: durationText || 'No duration available',
-        mainBody: '',
-        fundingBody: '',
-        awardValue: '',
+        title: cleanTexth1 || "Untitled",
+        shortDescription: summary || "No description available",
+        summary: tabDatasummary || "No tabDatasummary available",
+        eligibility: tabDataeligibility || "No tabDataeligibility available",
+        scope: tabDatascope || "No tabDatascope available",
+        imageUrl: "",
+        openingDate: openingDate || "No openingDate available",
+        closingDate: closingDate || "No closingDate available",
+        duration: durationText || "No duration available",
+        mainBody: "",
+        fundingBody: "",
+        awardValue: "",
         url: scrapeUrl,
-        order: 0
+        order: 0,
       });
-
     } catch (error) {
-      console.error('Error scraping data:', error);
-      setScrapeError('Failed to scrape data. Please check the URL and try again.');
+      console.error("Error scraping data:", error);
+      setScrapeError(
+        "Failed to scrape data. Please check the URL and try again."
+      );
     } finally {
       setIsScraping(false);
     }
@@ -135,94 +141,113 @@ export default function ScraperPage() {
 
   // Helper function to format date string
   const formatDateString = (dateString: string) => {
-    if (!dateString) return '';
-    
+    if (!dateString) return "";
+
     // Extract date from strings like "Opens: 1 January 2024" or "Closes: 31 March 2024"
     const dateMatch = dateString.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
     if (dateMatch) {
-      const day = dateMatch[1].padStart(2, '0');
+      const day = dateMatch[1].padStart(2, "0");
       const month = dateMatch[2];
       const year = dateMatch[3];
-      
+
       // Convert month name to number
       const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
       ];
-      const monthIndex = monthNames.findIndex(m => m.toLowerCase() === month.toLowerCase());
-      
+      const monthIndex = monthNames.findIndex(
+        (m) => m.toLowerCase() === month.toLowerCase()
+      );
+
       if (monthIndex !== -1) {
-        const monthNumber = (monthIndex + 1).toString().padStart(2, '0');
+        const monthNumber = (monthIndex + 1).toString().padStart(2, "0");
         return `${year}-${monthNumber}-${day}`;
       }
     }
-    return '';
+    return "";
   };
 
   // Helper function to calculate duration in months
-  const calculateDurationMonths = (openingDate: string, closingDate: string) => {
-    if (!openingDate || !closingDate) return '';
-    
+  const calculateDurationMonths = (
+    openingDate: string,
+    closingDate: string
+  ) => {
+    if (!openingDate || !closingDate) return "";
+
     try {
       const open = new Date(openingDate);
       const close = new Date(closingDate);
-      
-      if (isNaN(open.getTime()) || isNaN(close.getTime())) return '';
-      
+
+      if (isNaN(open.getTime()) || isNaN(close.getTime())) return "";
+
       const diffTime = Math.abs(close.getTime() - open.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const diffMonths = Math.ceil(diffDays / 30);
-      
-      return `${diffMonths} month${diffMonths !== 1 ? 's' : ''}`;
+
+      return `${diffMonths} month${diffMonths !== 1 ? "s" : ""}`;
     } catch (error) {
-      return '';
+      return "";
     }
   };
 
   const handleSendToCMS = async () => {
     if (!scrapedData.title && !scrapedData.shortDescription) {
-      setCmsMessage('Please scrape some data first before sending to CMS');
+      setCmsMessage("Please scrape some data first before sending to CMS");
       return;
     }
 
     setIsSendingToCMS(true);
-    setCmsMessage('');
+    setCmsMessage("");
 
     try {
       const collectionId = "6835ac0e320162939cd9c8d1";
-      
+
       const response = await fetch(`/api/collection/${collectionId}/items`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           fieldData: {
-            name: scrapedData.title || 'Scraped Content',
-            summary: scrapedData.shortDescription || 'No description available',
-            'ready-to-publish': false,
-            'open-date': scrapedData.openingDate,
-            'close-date': scrapedData.closingDate,
+            name: scrapedData.title || "Scraped Content",
+            summary: scrapedData.shortDescription || "No description available",
+            "ready-to-publish": false,
+            "open-date": scrapedData.openingDate,
+            "close-date": scrapedData.closingDate,
             duration: scrapedData.duration,
-            'funding-body': scrapedData.fundingBody,
-            'award-value': scrapedData.awardValue,
-            'grants-thumbnail-image': scrapedData.imageUrl,
-            'main-body': scrapedData.mainBody,
-            'meta-title': scrapedData.title || 'Scraped Content',
-            'meta-description': (scrapedData.shortDescription || 'No description available').replace(/\n/g, ' ').trim(),
-            'plain-summary': scrapedData.summary,
+            "funding-body": scrapedData.fundingBody,
+            "award-value": scrapedData.awardValue,
+            "grants-thumbnail-image": scrapedData.imageUrl,
+            "main-body": scrapedData.mainBody,
+            "meta-title": scrapedData.title || "Scraped Content",
+            "meta-description": (
+              scrapedData.shortDescription || "No description available"
+            )
+              .replace(/\n/g, " ")
+              .trim(),
+            "plain-summary": scrapedData.summary,
             scope: scrapedData.scope,
-            'eligibility-summary': scrapedData.eligibility,
+            "eligibility-summary": scrapedData.eligibility,
             url: scrapedData.url,
-            order: scrapedData.order
-          }
+            order: scrapedData.order,
+          },
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.text();
         let errorMessage = `Failed to create item: ${response.status} ${response.statusText}`;
-        
+
         try {
           const errorJson = JSON.parse(errorData);
           if (errorJson.details) {
@@ -231,22 +256,27 @@ export default function ScraperPage() {
         } catch (e) {
           errorMessage += ` - ${errorData}`;
         }
-        
+
         throw new Error(errorMessage);
       }
 
       const newItem = await response.json();
-      setCmsMessage(`✅ Successfully created item in CMS! Item ID: ${newItem.id}`);
-      
+      setCmsMessage(
+        `✅ Successfully created item in CMS! Item ID: ${newItem.id}`
+      );
+
       // Clear the form after successful creation
       setTimeout(() => {
         handleClearData();
-        setCmsMessage('');
+        setCmsMessage("");
       }, 3000);
-
     } catch (error) {
-      console.error('Error creating item:', error);
-      setCmsMessage(`❌ Failed to create item: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Error creating item:", error);
+      setCmsMessage(
+        `❌ Failed to create item: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     } finally {
       setIsSendingToCMS(false);
     }
@@ -254,30 +284,30 @@ export default function ScraperPage() {
 
   const handleClearData = () => {
     setScrapedData({
-      title: '',
-      shortDescription: '',
-      summary: '',
-      eligibility: '',
-      scope: '',
-      imageUrl: '',
-      openingDate: '',
-      closingDate: '',
-      duration: '',
-      mainBody: '',
-      fundingBody: '',
-      awardValue: '',
-      url: '',
-      order: 0
+      title: "",
+      shortDescription: "",
+      summary: "",
+      eligibility: "",
+      scope: "",
+      imageUrl: "",
+      openingDate: "",
+      closingDate: "",
+      duration: "",
+      mainBody: "",
+      fundingBody: "",
+      awardValue: "",
+      url: "",
+      order: 0,
     });
-    setScrapeUrl('');
-    setScrapeError('');
-    setCmsMessage('');
+    setScrapeUrl("");
+    setScrapeError("");
+    setCmsMessage("");
   };
 
   const getCmsMessageClass = () => {
-    if (cmsMessage.includes('✅')) return styles.success;
-    if (cmsMessage.includes('❌')) return styles.error;
-    return '';
+    if (cmsMessage.includes("✅")) return styles.success;
+    if (cmsMessage.includes("❌")) return styles.error;
+    return "";
   };
 
   return (
@@ -286,27 +316,8 @@ export default function ScraperPage() {
         <Link href="/" className={styles.backButton}>
           ← Back to Collections
         </Link>
-        
+
         <div className={styles.scraperContainer}>
-          <h1>Web Scraper</h1>
-          <p className={styles.scraperDescription}>
-            Enter a URL to scrape content and extract useful data for your Webflow items.
-          </p>
-
-          {/* Debug Collection Fields */}
-          {collectionFields && (
-            <div className={styles.debugSection}>
-              <h3>Available Collection Fields:</h3>
-              <div className={styles.fieldsList}>
-                {collectionFields.map((field: any, index: number) => (
-                  <div key={index} className={styles.fieldItem}>
-                    <strong>{field.displayName}</strong> ({field.slug}) - {field.type}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Scraping Input Section */}
           <div className={styles.scrapingSection}>
             <h2>Scrape Data from URL</h2>
@@ -324,35 +335,43 @@ export default function ScraperPage() {
                 className={styles.scrapeButton}
                 disabled={isScraping || !scrapeUrl.trim()}
               >
-                {isScraping ? 'Scraping...' : 'Scrape Data'}
+                {isScraping ? "Scraping..." : "Scrape Data"}
               </button>
             </div>
-            {scrapeError && (
-              <p className={styles.scrapeError}>{scrapeError}</p>
-            )}
+            {scrapeError && <p className={styles.scrapeError}>{scrapeError}</p>}
           </div>
 
           {/* Scraped Data Display */}
-          {(scrapedData.title || scrapedData.shortDescription || scrapedData.summary) && (
+          {(scrapedData.title ||
+            scrapedData.shortDescription ||
+            scrapedData.summary) && (
             <div className={styles.scrapedDataSection}>
               <div className={styles.sectionHeader}>
                 <h2>Scraped Data</h2>
-                <button onClick={handleClearData} className={styles.clearButton}>
+                <button
+                  onClick={handleClearData}
+                  className={styles.clearButton}
+                >
                   Clear Data
                 </button>
               </div>
-              
+
               <p className={styles.editInstructions}>
                 Review and edit the scraped data below before sending to CMS:
               </p>
-              
+
               <div className={styles.dataGrid}>
                 <div className={styles.dataField}>
                   <label>Title:</label>
                   <input
                     type="text"
                     value={scrapedData.title}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, title: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Edit title..."
                   />
@@ -362,7 +381,12 @@ export default function ScraperPage() {
                   <label>Short Description:</label>
                   <textarea
                     value={scrapedData.shortDescription}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, shortDescription: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        shortDescription: e.target.value,
+                      }))
+                    }
                     className={styles.dataTextarea}
                     placeholder="Edit short description..."
                     rows={3}
@@ -373,7 +397,12 @@ export default function ScraperPage() {
                   <label>Summary:</label>
                   <textarea
                     value={scrapedData.summary}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, summary: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        summary: e.target.value,
+                      }))
+                    }
                     className={styles.dataTextarea}
                     placeholder="Edit summary..."
                     rows={3}
@@ -384,7 +413,12 @@ export default function ScraperPage() {
                   <label>Eligibility:</label>
                   <textarea
                     value={scrapedData.eligibility}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, eligibility: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        eligibility: e.target.value,
+                      }))
+                    }
                     className={styles.dataTextarea}
                     placeholder="Edit eligibility..."
                     rows={4}
@@ -395,7 +429,12 @@ export default function ScraperPage() {
                   <label>Scope:</label>
                   <textarea
                     value={scrapedData.scope}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, scope: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        scope: e.target.value,
+                      }))
+                    }
                     className={styles.dataTextarea}
                     placeholder="Edit scope..."
                     rows={4}
@@ -408,7 +447,12 @@ export default function ScraperPage() {
                     <input
                       type="url"
                       value={scrapedData.imageUrl}
-                      onChange={(e) => setScrapedData(prev => ({ ...prev, imageUrl: e.target.value }))}
+                      onChange={(e) =>
+                        setScrapedData((prev) => ({
+                          ...prev,
+                          imageUrl: e.target.value,
+                        }))
+                      }
                       className={styles.dataInput}
                       placeholder="Edit image URL..."
                     />
@@ -420,7 +464,12 @@ export default function ScraperPage() {
                   <input
                     type="text"
                     value={scrapedData.openingDate}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, openingDate: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        openingDate: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="YYYY-MM-DD"
                   />
@@ -431,7 +480,12 @@ export default function ScraperPage() {
                   <input
                     type="text"
                     value={scrapedData.closingDate}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, closingDate: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        closingDate: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="YYYY-MM-DD"
                   />
@@ -442,7 +496,12 @@ export default function ScraperPage() {
                   <input
                     type="text"
                     value={scrapedData.duration}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, duration: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        duration: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Edit duration..."
                   />
@@ -452,7 +511,12 @@ export default function ScraperPage() {
                   <label>Main Body:</label>
                   <textarea
                     value={scrapedData.mainBody}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, mainBody: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        mainBody: e.target.value,
+                      }))
+                    }
                     className={styles.dataTextarea}
                     placeholder="Enter main body content..."
                     rows={6}
@@ -464,7 +528,12 @@ export default function ScraperPage() {
                   <input
                     type="text"
                     value={scrapedData.fundingBody}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, fundingBody: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        fundingBody: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Enter funding body..."
                   />
@@ -475,7 +544,12 @@ export default function ScraperPage() {
                   <input
                     type="text"
                     value={scrapedData.awardValue}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, awardValue: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        awardValue: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Enter award value..."
                   />
@@ -486,7 +560,12 @@ export default function ScraperPage() {
                   <input
                     type="url"
                     value={scrapedData.url}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, url: e.target.value }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        url: e.target.value,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Enter URL..."
                   />
@@ -497,7 +576,12 @@ export default function ScraperPage() {
                   <input
                     type="number"
                     value={scrapedData.order}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        order: parseInt(e.target.value) || 0,
+                      }))
+                    }
                     className={styles.dataInput}
                     placeholder="Enter order number..."
                     min="0"
@@ -513,11 +597,27 @@ export default function ScraperPage() {
                   className={styles.sendToCMSButton}
                   disabled={isSendingToCMS}
                 >
-                  {isSendingToCMS ? 'Creating Item...' : 'Send Data to CMS'}
+                  {isSendingToCMS ? "Creating Item..." : "Send Data to CMS"}
                 </button>
                 {cmsMessage && (
-                  <p className={`${styles.cmsMessage} ${getCmsMessageClass()}`}>{cmsMessage}</p>
+                  <p className={`${styles.cmsMessage} ${getCmsMessageClass()}`}>
+                    {cmsMessage}
+                  </p>
                 )}
+              </div>
+            </div>
+          )}
+          {/* Debug Collection Fields */}
+          {collectionFields && (
+            <div className={styles.debugSection}>
+              <h3>Available Collection Fields:</h3>
+              <div className={styles.fieldsList}>
+                {collectionFields.map((field: any, index: number) => (
+                  <div key={index} className={styles.fieldItem}>
+                    <strong>{field.displayName}</strong> ({field.slug}) -{" "}
+                    {field.type}
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -525,4 +625,4 @@ export default function ScraperPage() {
       </main>
     </div>
   );
-} 
+}
