@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 
+interface RouteParams {
+  params: Promise<{
+    id: string;
+    itemId: string;
+  }>;
+}
+
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string; itemId: string } }
+  { params }: RouteParams
 ) {
   try {
+    const resolvedParams = await params;
     const body = await request.json();
     
     // Prepare the request body for Webflow API
@@ -12,7 +20,7 @@ export async function PATCH(
       fieldData: body.fieldData
     };
 
-    const response = await fetch(`https://api.webflow.com/v2/collections/${params.id}/items/${params.itemId}`, {
+    const response = await fetch(`https://api.webflow.com/v2/collections/${resolvedParams.id}/items/${resolvedParams.itemId}`, {
       method: 'PATCH',
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
