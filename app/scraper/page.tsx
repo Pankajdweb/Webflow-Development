@@ -12,11 +12,19 @@ export default function ScraperPage() {
   const [cmsMessage, setCmsMessage] = useState('');
   const [scrapedData, setScrapedData] = useState({
     title: '',
-    description: '',
-    content: '',
+    shortDescription: '',
+    summary: '',
+    eligibility: '',
+    scope: '',
     imageUrl: '',
-    author: '',
-    publishedDate: ''
+    openingDate: '',
+    closingDate: '',
+    duration: '',
+    mainBody: '',
+    fundingBody: '',
+    awardValue: '',
+    url: '',
+    order: 0
   });
   const [collectionFields, setCollectionFields] = useState<any>(null);
 
@@ -24,7 +32,7 @@ export default function ScraperPage() {
   useEffect(() => {
     const fetchCollectionStructure = async () => {
       try {
-        const collectionId = "684041261ac1bc47be79aa14";
+        const collectionId = "6835ac0e320162939cd9c8d1";
         const response = await fetch(`/api/collection/${collectionId}`);
         if (response.ok) {
           const data = await response.json();
@@ -64,40 +72,57 @@ export default function ScraperPage() {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlContent, 'text/html');
       
-      // Extract various data points
-      const title = doc.querySelector('title')?.textContent || 
-                   doc.querySelector('h1')?.textContent || 
-                   doc.querySelector('h2')?.textContent || '';
+      // Extract title with span removal
+      const titleEl = doc.querySelector("main h1.govuk-heading-l");
+      let cleanTexth1 = '';
       
-      const metaDescription = doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+      if (titleEl) {
+        // Remove the span manually from HTML
+        const innerWithoutSpan = titleEl.innerHTML
+          .replace(/<span[^>]*>.*?<\/span>/, "")
+          .trim();
+
+        // Create a temporary div to parse the cleaned string
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = innerWithoutSpan;
+        cleanTexth1 = tempDiv.textContent?.trim() || '';
+      }
       
-      const ogDescription = doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || '';
-      
-      const content = doc.querySelector('article')?.textContent || 
-                     doc.querySelector('.content')?.textContent || 
-                     doc.querySelector('main')?.textContent || 
-                     doc.querySelector('p')?.textContent || '';
-      
-      const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
-                      doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || 
-                      doc.querySelector('img')?.getAttribute('src') || '';
-      
-      const author = doc.querySelector('meta[name="author"]')?.getAttribute('content') || 
-                    doc.querySelector('.author')?.textContent || 
-                    doc.querySelector('[rel="author"]')?.textContent || '';
-      
-      const publishedDate = doc.querySelector('meta[property="article:published_time"]')?.getAttribute('content') || 
-                           doc.querySelector('time')?.getAttribute('datetime') || 
-                           doc.querySelector('.date')?.textContent || '';
+      // Extract other elements
+      const summaryEl = doc.querySelector("main p.govuk-body");
+      const openEl = doc.querySelector("main ul.govuk-list li:first-child");
+      const closeEl = doc.querySelector("main ul.govuk-list li:nth-child(2)");
+      const tabEl = doc.querySelector("main #summary");
+      const tabEligibility = doc.querySelector("main #eligibility");
+      const tabScope = doc.querySelector("main #scope");
+
+      const rawOpenDate = (openEl as HTMLElement)?.innerText?.trim() || "";
+      const rawCloseDate = (closeEl as HTMLElement)?.innerText?.trim() || "";
+      const openingDate = formatDateString(rawOpenDate);
+      const closingDate = formatDateString(rawCloseDate);
+      const durationText = calculateDurationMonths(openingDate, closingDate);
+
+      const summary = (summaryEl as HTMLElement)?.innerText?.trim() || "";
+      const tabDatasummary = (tabEl as HTMLElement)?.innerText?.trim() || "";
+      const tabDataeligibility = (tabEligibility as HTMLElement)?.innerText?.trim() || "";
+      const tabDatascope = (tabScope as HTMLElement)?.innerText?.trim() || "";
       
       // Update scraped data
       setScrapedData({
-        title: title.trim(),
-        description: metaDescription.trim() || ogDescription.trim(),
-        content: content.trim().substring(0, 500) + (content.length > 500 ? '...' : ''),
-        imageUrl: imageUrl,
-        author: author.trim(),
-        publishedDate: publishedDate.trim()
+        title: cleanTexth1 || 'Untitled',
+        shortDescription: summary || 'No description available',
+        summary: tabDatasummary || 'No tabDatasummary available',
+        eligibility: tabDataeligibility || 'No tabDataeligibility available',
+        scope: tabDatascope || 'No tabDatascope available',
+        imageUrl: '',
+        openingDate: openingDate || 'No openingDate available',
+        closingDate: closingDate || 'No closingDate available',
+        duration: durationText || 'No duration available',
+        mainBody: '',
+        fundingBody: '',
+        awardValue: '',
+        url: scrapeUrl,
+        order: 0
       });
 
     } catch (error) {
@@ -108,8 +133,54 @@ export default function ScraperPage() {
     }
   };
 
+  // Helper function to format date string
+  const formatDateString = (dateString: string) => {
+    if (!dateString) return '';
+    
+    // Extract date from strings like "Opens: 1 January 2024" or "Closes: 31 March 2024"
+    const dateMatch = dateString.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+    if (dateMatch) {
+      const day = dateMatch[1].padStart(2, '0');
+      const month = dateMatch[2];
+      const year = dateMatch[3];
+      
+      // Convert month name to number
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const monthIndex = monthNames.findIndex(m => m.toLowerCase() === month.toLowerCase());
+      
+      if (monthIndex !== -1) {
+        const monthNumber = (monthIndex + 1).toString().padStart(2, '0');
+        return `${year}-${monthNumber}-${day}`;
+      }
+    }
+    return '';
+  };
+
+  // Helper function to calculate duration in months
+  const calculateDurationMonths = (openingDate: string, closingDate: string) => {
+    if (!openingDate || !closingDate) return '';
+    
+    try {
+      const open = new Date(openingDate);
+      const close = new Date(closingDate);
+      
+      if (isNaN(open.getTime()) || isNaN(close.getTime())) return '';
+      
+      const diffTime = Math.abs(close.getTime() - open.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffMonths = Math.ceil(diffDays / 30);
+      
+      return `${diffMonths} month${diffMonths !== 1 ? 's' : ''}`;
+    } catch (error) {
+      return '';
+    }
+  };
+
   const handleSendToCMS = async () => {
-    if (!scrapedData.title && !scrapedData.description) {
+    if (!scrapedData.title && !scrapedData.shortDescription) {
       setCmsMessage('Please scrape some data first before sending to CMS');
       return;
     }
@@ -118,7 +189,7 @@ export default function ScraperPage() {
     setCmsMessage('');
 
     try {
-      const collectionId = "684041261ac1bc47be79aa14";
+      const collectionId = "6835ac0e320162939cd9c8d1";
       
       const response = await fetch(`/api/collection/${collectionId}/items`, {
         method: 'POST',
@@ -128,8 +199,22 @@ export default function ScraperPage() {
         body: JSON.stringify({
           fieldData: {
             name: scrapedData.title || 'Scraped Content',
-            summary: scrapedData.description || scrapedData.content || 'No description available',
-            'ready-to-publish': true
+            summary: scrapedData.shortDescription || 'No description available',
+            'ready-to-publish': false,
+            'open-date': scrapedData.openingDate,
+            'close-date': scrapedData.closingDate,
+            duration: scrapedData.duration,
+            'funding-body': scrapedData.fundingBody,
+            'award-value': scrapedData.awardValue,
+            'grants-thumbnail-image': scrapedData.imageUrl,
+            'main-body': scrapedData.mainBody,
+            'meta-title': scrapedData.title || 'Scraped Content',
+            'meta-description': (scrapedData.shortDescription || 'No description available').replace(/\n/g, ' ').trim(),
+            'plain-summary': scrapedData.summary,
+            scope: scrapedData.scope,
+            'eligibility-summary': scrapedData.eligibility,
+            url: scrapedData.url,
+            order: scrapedData.order
           }
         }),
       });
@@ -170,11 +255,19 @@ export default function ScraperPage() {
   const handleClearData = () => {
     setScrapedData({
       title: '',
-      description: '',
-      content: '',
+      shortDescription: '',
+      summary: '',
+      eligibility: '',
+      scope: '',
       imageUrl: '',
-      author: '',
-      publishedDate: ''
+      openingDate: '',
+      closingDate: '',
+      duration: '',
+      mainBody: '',
+      fundingBody: '',
+      awardValue: '',
+      url: '',
+      order: 0
     });
     setScrapeUrl('');
     setScrapeError('');
@@ -240,7 +333,7 @@ export default function ScraperPage() {
           </div>
 
           {/* Scraped Data Display */}
-          {(scrapedData.title || scrapedData.description || scrapedData.content) && (
+          {(scrapedData.title || scrapedData.shortDescription || scrapedData.summary) && (
             <div className={styles.scrapedDataSection}>
               <div className={styles.sectionHeader}>
                 <h2>Scraped Data</h2>
@@ -266,23 +359,45 @@ export default function ScraperPage() {
                 </div>
 
                 <div className={styles.dataField}>
-                  <label>Description:</label>
+                  <label>Short Description:</label>
                   <textarea
-                    value={scrapedData.description}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, description: e.target.value }))}
+                    value={scrapedData.shortDescription}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, shortDescription: e.target.value }))}
                     className={styles.dataTextarea}
-                    placeholder="Edit description..."
+                    placeholder="Edit short description..."
                     rows={3}
                   />
                 </div>
 
                 <div className={styles.dataField}>
-                  <label>Content Preview:</label>
+                  <label>Summary:</label>
                   <textarea
-                    value={scrapedData.content}
-                    onChange={(e) => setScrapedData(prev => ({ ...prev, content: e.target.value }))}
+                    value={scrapedData.summary}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, summary: e.target.value }))}
                     className={styles.dataTextarea}
-                    placeholder="Edit content..."
+                    placeholder="Edit summary..."
+                    rows={3}
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Eligibility:</label>
+                  <textarea
+                    value={scrapedData.eligibility}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, eligibility: e.target.value }))}
+                    className={styles.dataTextarea}
+                    placeholder="Edit eligibility..."
+                    rows={4}
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Scope:</label>
+                  <textarea
+                    value={scrapedData.scope}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, scope: e.target.value }))}
+                    className={styles.dataTextarea}
+                    placeholder="Edit scope..."
                     rows={4}
                   />
                 </div>
@@ -300,31 +415,95 @@ export default function ScraperPage() {
                   </div>
                 )}
 
-                {scrapedData.author && (
-                  <div className={styles.dataField}>
-                    <label>Author:</label>
-                    <input
-                      type="text"
-                      value={scrapedData.author}
-                      onChange={(e) => setScrapedData(prev => ({ ...prev, author: e.target.value }))}
-                      className={styles.dataInput}
-                      placeholder="Edit author..."
-                    />
-                  </div>
-                )}
+                <div className={styles.dataField}>
+                  <label>Opening Date (YYYY-MM-DD):</label>
+                  <input
+                    type="text"
+                    value={scrapedData.openingDate}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, openingDate: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="YYYY-MM-DD"
+                  />
+                </div>
 
-                {scrapedData.publishedDate && (
-                  <div className={styles.dataField}>
-                    <label>Published Date:</label>
-                    <input
-                      type="text"
-                      value={scrapedData.publishedDate}
-                      onChange={(e) => setScrapedData(prev => ({ ...prev, publishedDate: e.target.value }))}
-                      className={styles.dataInput}
-                      placeholder="Edit published date..."
-                    />
-                  </div>
-                )}
+                <div className={styles.dataField}>
+                  <label>Closing Date (YYYY-MM-DD):</label>
+                  <input
+                    type="text"
+                    value={scrapedData.closingDate}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, closingDate: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="YYYY-MM-DD"
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Duration:</label>
+                  <input
+                    type="text"
+                    value={scrapedData.duration}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, duration: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="Edit duration..."
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Main Body:</label>
+                  <textarea
+                    value={scrapedData.mainBody}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, mainBody: e.target.value }))}
+                    className={styles.dataTextarea}
+                    placeholder="Enter main body content..."
+                    rows={6}
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Funding Body:</label>
+                  <input
+                    type="text"
+                    value={scrapedData.fundingBody}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, fundingBody: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="Enter funding body..."
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Award Value:</label>
+                  <input
+                    type="text"
+                    value={scrapedData.awardValue}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, awardValue: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="Enter award value..."
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>URL:</label>
+                  <input
+                    type="url"
+                    value={scrapedData.url}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, url: e.target.value }))}
+                    className={styles.dataInput}
+                    placeholder="Enter URL..."
+                  />
+                </div>
+
+                <div className={styles.dataField}>
+                  <label>Order (for sorting):</label>
+                  <input
+                    type="number"
+                    value={scrapedData.order}
+                    onChange={(e) => setScrapedData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))}
+                    className={styles.dataInput}
+                    placeholder="Enter order number..."
+                    min="0"
+                    step="1"
+                  />
+                </div>
               </div>
 
               {/* Send to CMS Button */}

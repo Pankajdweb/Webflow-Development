@@ -46,7 +46,6 @@ export default async function Home() {
                   {item.updated_on && (
                     <p>Last Updated: {new Date(item.updated_on).toLocaleDateString()}</p>
                   )}
-                  <p className={styles.status}>Status: {item._archived ? 'Archived' : 'Active'}</p>
                 </div>
               </Link>
             ))}

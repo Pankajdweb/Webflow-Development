@@ -12,18 +12,46 @@ interface EditItemModalProps {
 }
 
 export default function EditItemModal({ item, isOpen, onClose, onSave, collectionId }: EditItemModalProps) {
+  // Helper function to convert date format for HTML date input
+  const formatDateForInput = (dateString: string) => {
+    if (!dateString) return '';
+    
+    // If it's already in YYYY-MM-DD format, return as is
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+    
+    // Try to parse different date formats
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+    }
+    
+    return '';
+  };
+
   const [formData, setFormData] = useState({
     name: item?.fieldData?.name || item?.name || '',
-    'summary': item?.fieldData?.summary || '',
+    summary: item?.fieldData?.summary || '',
     'ready-to-publish': item?.fieldData?.['ready-to-publish'] || false,
-    // Add more fields as needed
+    'open-date': formatDateForInput(item?.fieldData?.['open-date'] || ''),
+    'close-date': formatDateForInput(item?.fieldData?.['close-date'] || ''),
+    duration: item?.fieldData?.duration || '',
+    'funding-body': item?.fieldData?.['funding-body'] || '',
+    'award-value': item?.fieldData?.['award-value'] || '',
+    'grants-thumbnail-image': item?.fieldData?.['grants-thumbnail-image'] || '',
+    'main-body': item?.fieldData?.['main-body'] || '',
+    'meta-title': item?.fieldData?.['meta-title'] || '',
+    'meta-description': item?.fieldData?.['meta-description'] || '',
+    'plain-summary': item?.fieldData?.['plain-summary'] || '',
+    scope: item?.fieldData?.scope || '',
+    'eligibility-summary': item?.fieldData?.['eligibility-summary'] || '',
+    url: item?.fieldData?.url || '',
+    order: item?.fieldData?.order || 0
   });
   const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
-
-  // Determine if item is currently live/published
-  const isCurrentlyLive = item?.isLive === true;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -82,7 +110,7 @@ export default function EditItemModal({ item, isOpen, onClose, onSave, collectio
         
         <div className={styles.modalBody}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Title:</label>
             <input
               type="text"
               id="name"
@@ -91,13 +119,169 @@ export default function EditItemModal({ item, isOpen, onClose, onSave, collectio
               className={styles.formInput}
             />
           </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="order">Order (for sorting):</label>
+            <input
+              type="number"
+              id="order"
+              value={formData.order}
+              onChange={(e) => handleInputChange('order', e.target.value)}
+              className={styles.formInput}
+              min="0"
+              step="1"
+            />
+          </div>
           
           <div className={styles.formGroup}>
-            <label htmlFor="summary">Summary:</label>
+            <label htmlFor="summary">Short Description:</label>
             <textarea
               id="summary"
-              value={formData?.summary}
+              value={formData.summary}
               onChange={(e) => handleInputChange('summary', e.target.value)}
+              className={styles.formTextarea}
+              rows={3}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="meta-title">Meta Title:</label>
+            <input
+              type="text"
+              id="meta-title"
+              value={formData['meta-title']}
+              onChange={(e) => handleInputChange('meta-title', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="meta-description">Meta Description:</label>
+            <textarea
+              id="meta-description"
+              value={formData['meta-description']}
+              onChange={(e) => handleInputChange('meta-description', e.target.value)}
+              className={styles.formTextarea}
+              rows={2}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="open-date">Opening Date:</label>
+            <input
+              type="date"
+              id="open-date"
+              value={formData['open-date']}
+              onChange={(e) => handleInputChange('open-date', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="close-date">Closing Date:</label>
+            <input
+              type="date"
+              id="close-date"
+              value={formData['close-date']}
+              onChange={(e) => handleInputChange('close-date', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="duration">Duration:</label>
+            <input
+              type="text"
+              id="duration"
+              value={formData.duration}
+              onChange={(e) => handleInputChange('duration', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="funding-body">Funding Body:</label>
+            <input
+              type="text"
+              id="funding-body"
+              value={formData['funding-body']}
+              onChange={(e) => handleInputChange('funding-body', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="award-value">Award Value:</label>
+            <input
+              type="text"
+              id="award-value"
+              value={formData['award-value']}
+              onChange={(e) => handleInputChange('award-value', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="grants-thumbnail-image">Grants Thumbnail Image URL:</label>
+            <input
+              type="url"
+              id="grants-thumbnail-image"
+              value={formData['grants-thumbnail-image']}
+              onChange={(e) => handleInputChange('grants-thumbnail-image', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="url">URL:</label>
+            <input
+              type="url"
+              id="url"
+              value={formData.url}
+              onChange={(e) => handleInputChange('url', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="main-body">Grants Body:</label>
+            <textarea
+              id="main-body"
+              value={formData['main-body']}
+              onChange={(e) => handleInputChange('main-body', e.target.value)}
+              className={styles.formTextarea}
+              rows={6}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="plain-summary">Plain Summary:</label>
+            <textarea
+              id="plain-summary"
+              value={formData['plain-summary']}
+              onChange={(e) => handleInputChange('plain-summary', e.target.value)}
+              className={styles.formTextarea}
+              rows={4}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="eligibility-summary">Eligibility Summary:</label>
+            <textarea
+              id="eligibility-summary"
+              value={formData['eligibility-summary']}
+              onChange={(e) => handleInputChange('eligibility-summary', e.target.value)}
+              className={styles.formTextarea}
+              rows={4}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="scope">Scope:</label>
+            <textarea
+              id="scope"
+              value={formData.scope}
+              onChange={(e) => handleInputChange('scope', e.target.value)}
               className={styles.formTextarea}
               rows={4}
             />

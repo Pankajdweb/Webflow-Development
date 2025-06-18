@@ -12,13 +12,6 @@ export async function PATCH(
       fieldData: body.fieldData
     };
 
-    // Convert isDraft to isLive for Webflow API
-    // isDraft: true = save as draft (isLive: false)
-    // isDraft: false = publish to live (isLive: true)
-    if (body.isDraft !== undefined) {
-      webflowBody.isLive = !body.isDraft;
-    }
-
     const response = await fetch(`https://api.webflow.com/v2/collections/${params.id}/items/${params.itemId}`, {
       method: 'PATCH',
       headers: {

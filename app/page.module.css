@@ -237,28 +237,39 @@ a.secondary {
   margin-bottom: 0;
 }
 
-.status {
-  margin: 0.5rem 0 0 0;
-  font-size: 0.875rem;
-  color: #999;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .readyStatus {
   margin: 0.5rem 0 0 0;
   font-size: 0.875rem;
-  color: #999;
+  color: #666;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadge.draft {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.statusBadge.published {
+  background: #d1fae5;
+  color: #065f46;
+}
+
 .error {
+  color: #dc2626;
   text-align: center;
-  color: #e00;
-  font-weight: 500;
+  margin: 2rem 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -276,10 +287,6 @@ a.secondary {
   
   .item p {
     color: #ccc;
-  }
-  
-  .status {
-    color: #999;
   }
   
   .readyStatus {
