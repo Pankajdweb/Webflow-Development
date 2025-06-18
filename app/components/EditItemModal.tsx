@@ -118,19 +118,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="order">Order (for sorting):</label>
-            <input
-              type="number"
-              id="order"
-              value={formData.order}
-              onChange={(e) => handleInputChange('order', e.target.value)}
-              className={styles.formInput}
-              min="0"
-              step="1"
-            />
-          </div>
-          
-          <div className={styles.formGroup}>
             <label htmlFor="summary">Short Description:</label>
             <textarea
               id="summary"
@@ -141,27 +128,7 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="meta-title">Meta Title:</label>
-            <input
-              type="text"
-              id="meta-title"
-              value={formData['meta-title']}
-              onChange={(e) => handleInputChange('meta-title', e.target.value)}
-              className={styles.formInput}
-            />
-          </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="meta-description">Meta Description:</label>
-            <textarea
-              id="meta-description"
-              value={formData['meta-description']}
-              onChange={(e) => handleInputChange('meta-description', e.target.value)}
-              className={styles.formTextarea}
-              rows={2}
-            />
-          </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="open-date">Opening Date:</label>
@@ -218,6 +185,58 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
+
+
+
+          <div className={styles.formGroup}>
+            <label htmlFor="main-body">Grants Body:</label>
+            <RichTextEditor
+              value={formData['main-body']}
+              onChange={(value) => handleInputChange('main-body', value)}
+            />
+          </div>
+
+
+
+          <div className={styles.formGroup}>
+            <label htmlFor="order">Order (for sorting):</label>
+            <input
+              type="number"
+              id="order"
+              value={formData.order}
+              onChange={(e) => handleInputChange('order', e.target.value)}
+              className={styles.formInput}
+              min="0"
+              step="1"
+            />
+          </div>
+          
+
+
+          <div className={styles.formGroup}>
+            <label htmlFor="meta-title">Meta Title:</label>
+            <input
+              type="text"
+              id="meta-title"
+              value={formData['meta-title']}
+              onChange={(e) => handleInputChange('meta-title', e.target.value)}
+              className={styles.formInput}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="meta-description">Meta Description:</label>
+            <textarea
+              id="meta-description"
+              value={formData['meta-description']}
+              onChange={(e) => handleInputChange('meta-description', e.target.value)}
+              className={styles.formTextarea}
+              rows={2}
+            />
+          </div>
+
+
+          
           <div className={styles.formGroup}>
             <label htmlFor="grants-thumbnail-image">Grants Thumbnail Image URL:</label>
             <input
@@ -229,6 +248,8 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
+
+          
           <div className={styles.formGroup}>
             <label htmlFor="url">URL:</label>
             <input
@@ -237,14 +258,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
               value={formData.url}
               onChange={(e) => handleInputChange('url', e.target.value)}
               className={styles.formInput}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="main-body">Grants Body:</label>
-            <RichTextEditor
-              value={formData['main-body']}
-              onChange={(value) => handleInputChange('main-body', value)}
             />
           </div>
 

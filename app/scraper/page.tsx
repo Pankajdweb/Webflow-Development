@@ -407,19 +407,7 @@ export default function ScraperPage() {
                   />
                 </div>
 
-                <div className={styles.dataField}>
-                  <label>Grants Body (Combined Content):</label>
-                  <RichTextEditor
-                    value={scrapedData.mainBody}
-                    onChange={(value) =>
-                      setScrapedData((prev) => ({
-                        ...prev,
-                        mainBody: value,
-                      }))
-                    }
-                    placeholder="Enter main body content..."
-                  />
-                </div>
+
 
                 {scrapedData.imageUrl && (
                   <div className={styles.dataField}>
@@ -519,19 +507,18 @@ export default function ScraperPage() {
                   />
                 </div>
 
+
                 <div className={styles.dataField}>
-                  <label>URL:</label>
-                  <input
-                    type="url"
-                    value={scrapedData.url}
-                    onChange={(e) =>
+                  <label>Grants Body (Combined Content):</label>
+                  <RichTextEditor
+                    value={scrapedData.mainBody}
+                    onChange={(value) =>
                       setScrapedData((prev) => ({
                         ...prev,
-                        url: e.target.value,
+                        mainBody: value,
                       }))
                     }
-                    className={styles.dataInput}
-                    placeholder="Enter URL..."
+                    placeholder="Enter main body content..."
                   />
                 </div>
 
@@ -552,6 +539,24 @@ export default function ScraperPage() {
                     step="1"
                   />
                 </div>
+
+                <div className={styles.dataField}>
+                  <label>URL:</label>
+                  <input
+                    type="url"
+                    value={scrapedData.url}
+                    onChange={(e) =>
+                      setScrapedData((prev) => ({
+                        ...prev,
+                        url: e.target.value,
+                      }))
+                    }
+                    className={styles.dataInput}
+                    placeholder="Enter URL..."
+                  />
+                </div>
+
+
               </div>
 
               {/* Send to CMS Button */}
