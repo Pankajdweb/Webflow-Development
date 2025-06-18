@@ -46,6 +46,25 @@ export default function ScraperPage() {
     fetchCollectionStructure();
   }, []);
 
+  // Helper function to combine summary, eligibility, and scope into formatted HTML
+  const combineContentIntoHTML = (summary: string, eligibility: string, scope: string) => {
+    let combinedHTML = '';
+    
+    if (summary && summary !== "No tabDatasummary available") {
+      combinedHTML += `<h2>Summary</h2><p>${summary}</p>`;
+    }
+    
+    if (eligibility && eligibility !== "No tabDataeligibility available") {
+      combinedHTML += `<h2>Eligibility</h2><p>${eligibility}</p>`;
+    }
+    
+    if (scope && scope !== "No tabDatascope available") {
+      combinedHTML += `<h2>Scope</h2><p>${scope}</p>`;
+    }
+    
+    return combinedHTML || '<p>No content available</p>';
+  };
+
   const handleScrapeData = async () => {
     if (!scrapeUrl.trim()) {
       setScrapeError("Please enter a URL to scrape");
@@ -123,7 +142,7 @@ export default function ScraperPage() {
         openingDate: openingDate || "No openingDate available",
         closingDate: closingDate || "No closingDate available",
         duration: durationText || "No duration available",
-        mainBody: "",
+        mainBody: combineContentIntoHTML(tabDatasummary, tabDataeligibility, tabDatascope),
         fundingBody: "",
         awardValue: "",
         url: scrapeUrl,
@@ -233,9 +252,6 @@ export default function ScraperPage() {
             )
               .replace(/\n/g, " ")
               .trim(),
-            "plain-summary": scrapedData.summary,
-            scope: scrapedData.scope,
-            "eligibility-summary": scrapedData.eligibility,
             url: scrapedData.url,
             order: scrapedData.order,
           },
@@ -392,50 +408,16 @@ export default function ScraperPage() {
                 </div>
 
                 <div className={styles.dataField}>
-                  <label>Summary:</label>
-                  <textarea
-                    value={scrapedData.summary}
-                    onChange={(e) =>
+                  <label>Grants Body (Combined Content):</label>
+                  <RichTextEditor
+                    value={scrapedData.mainBody}
+                    onChange={(value) =>
                       setScrapedData((prev) => ({
                         ...prev,
-                        summary: e.target.value,
+                        mainBody: value,
                       }))
                     }
-                    className={styles.dataTextarea}
-                    placeholder="Edit summary..."
-                    rows={3}
-                  />
-                </div>
-
-                <div className={styles.dataField}>
-                  <label>Eligibility:</label>
-                  <textarea
-                    value={scrapedData.eligibility}
-                    onChange={(e) =>
-                      setScrapedData((prev) => ({
-                        ...prev,
-                        eligibility: e.target.value,
-                      }))
-                    }
-                    className={styles.dataTextarea}
-                    placeholder="Edit eligibility..."
-                    rows={4}
-                  />
-                </div>
-
-                <div className={styles.dataField}>
-                  <label>Scope:</label>
-                  <textarea
-                    value={scrapedData.scope}
-                    onChange={(e) =>
-                      setScrapedData((prev) => ({
-                        ...prev,
-                        scope: e.target.value,
-                      }))
-                    }
-                    className={styles.dataTextarea}
-                    placeholder="Edit scope..."
-                    rows={4}
+                    placeholder="Enter main body content..."
                   />
                 </div>
 
@@ -502,20 +484,6 @@ export default function ScraperPage() {
                     }
                     className={styles.dataInput}
                     placeholder="Edit duration..."
-                  />
-                </div>
-
-                <div className={styles.dataField}>
-                  <label>Grants Body:</label>
-                  <RichTextEditor
-                    value={scrapedData.mainBody}
-                    onChange={(value) =>
-                      setScrapedData((prev) => ({
-                        ...prev,
-                        mainBody: value,
-                      }))
-                    }
-                    placeholder="Enter main body content..."
                   />
                 </div>
 

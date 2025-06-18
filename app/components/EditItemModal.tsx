@@ -43,9 +43,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
     'main-body': item?.fieldData?.['main-body'] || '',
     'meta-title': item?.fieldData?.['meta-title'] || '',
     'meta-description': item?.fieldData?.['meta-description'] || '',
-    'plain-summary': item?.fieldData?.['plain-summary'] || '',
-    scope: item?.fieldData?.scope || '',
-    'eligibility-summary': item?.fieldData?.['eligibility-summary'] || '',
     url: item?.fieldData?.url || '',
     order: item?.fieldData?.order || 0
   });
@@ -248,39 +245,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             <RichTextEditor
               value={formData['main-body']}
               onChange={(value) => handleInputChange('main-body', value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="plain-summary">Plain Summary:</label>
-            <textarea
-              id="plain-summary"
-              value={formData['plain-summary']}
-              onChange={(e) => handleInputChange('plain-summary', e.target.value)}
-              className={styles.formTextarea}
-              rows={4}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="eligibility-summary">Eligibility Summary:</label>
-            <textarea
-              id="eligibility-summary"
-              value={formData['eligibility-summary']}
-              onChange={(e) => handleInputChange('eligibility-summary', e.target.value)}
-              className={styles.formTextarea}
-              rows={4}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="scope">Scope:</label>
-            <textarea
-              id="scope"
-              value={formData.scope}
-              onChange={(e) => handleInputChange('scope', e.target.value)}
-              className={styles.formTextarea}
-              rows={4}
             />
           </div>
 
