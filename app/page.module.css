@@ -604,8 +604,8 @@ a.secondary {
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  width: 100%;
+  max-width: 1000px;
+  width: 800px;
 }
 
 .scraperContainer h1 {
@@ -928,5 +928,212 @@ a.secondary {
 
   .fieldItem {
     color: #d1d5db;
+  }
+}
+
+/* Rich Text Editor Styles */
+.richTextEditor {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 8px;
+  background: white;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  border-radius: 4px 4px 0 0;
+}
+
+.toolbarGroup {
+  display: flex;
+  gap: 2px;
+  padding-right: 8px;
+  border-right: 1px solid #ddd;
+}
+
+.toolbarGroup:last-child {
+  border-right: none;
+}
+
+.toolbarButton {
+  padding: 4px 8px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.toolbarButton:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.toolbarButton:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 4px;
+}
+
+.toolbarButtonActive {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.toolbarButtonActive:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Image upload specific styles */
+.toolbarButton[title*="Upload"] {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.toolbarButton[title*="Upload"]:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.editor {
+  padding: 12px;
+  min-height: 200px;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  overflow-y: auto;
+}
+
+.editor:empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+  pointer-events: none;
+}
+
+.editorFocused {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.editor h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.editor h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.editor h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.editor h4 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 1.33em 0;
+}
+
+.editor h5 {
+  font-size: 0.83em;
+  font-weight: bold;
+  margin: 1.67em 0;
+}
+
+.editor h6 {
+  font-size: 0.67em;
+  font-weight: bold;
+  margin: 2.33em 0;
+}
+
+.editor p {
+  margin: 0.5em 0;
+}
+
+.editor ul, .editor ol {
+  margin: 0.5em 0;
+  padding-left: 2em;
+}
+
+.editor img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5em 0;
+}
+
+.editor a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .richTextEditor {
+    border-color: #444;
+    background: #1a1a1a;
+  }
+  
+  .toolbar {
+    background-color: #2a2a2a;
+    border-bottom-color: #444;
+  }
+  
+  .toolbarGroup {
+    border-right-color: #444;
+  }
+  
+  .toolbarButton {
+    background: #333;
+    border-color: #555;
+    color: #fff;
+  }
+  
+  .toolbarButton:hover {
+    background-color: #444;
+    border-color: #666;
+  }
+  
+  .editor {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  
+  .editor:empty:before {
+    color: #666;
+  }
+  
+  .editor a {
+    color: #4dabf7;
   }
 }

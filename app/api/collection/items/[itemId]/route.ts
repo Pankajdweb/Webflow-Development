@@ -18,10 +18,12 @@ export async function PATCH(
     
     // Prepare the request body for Webflow API
     const webflowBody: any = {
-      fieldData: body.fieldData
+      fieldData: body.fieldData,
+      isArchived: false,
+      isDraft: false
     };
 
-    const response = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}/items/${resolvedParams.itemId}`, {
+    const response = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}/items/${resolvedParams.itemId}/live`, {
       method: 'PATCH',
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',

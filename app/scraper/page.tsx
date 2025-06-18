@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "../page.module.css";
 import Link from "next/link";
+import RichTextEditor from "../components/RichTextEditor";
 
 export default function ScraperPage() {
   const [scrapeUrl, setScrapeUrl] = useState("");
@@ -505,18 +506,16 @@ export default function ScraperPage() {
                 </div>
 
                 <div className={styles.dataField}>
-                  <label>Main Body:</label>
-                  <textarea
+                  <label>Grants Body:</label>
+                  <RichTextEditor
                     value={scrapedData.mainBody}
-                    onChange={(e) =>
+                    onChange={(value) =>
                       setScrapedData((prev) => ({
                         ...prev,
-                        mainBody: e.target.value,
+                        mainBody: value,
                       }))
                     }
-                    className={styles.dataTextarea}
                     placeholder="Enter main body content..."
-                    rows={6}
                   />
                 </div>
 

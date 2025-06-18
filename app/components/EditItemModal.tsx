@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from '../page.module.css';
+import RichTextEditor from './RichTextEditor';
 
 interface EditItemModalProps {
   item: any;
@@ -244,12 +245,9 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
 
           <div className={styles.formGroup}>
             <label htmlFor="main-body">Grants Body:</label>
-            <textarea
-              id="main-body"
+            <RichTextEditor
               value={formData['main-body']}
-              onChange={(e) => handleInputChange('main-body', e.target.value)}
-              className={styles.formTextarea}
-              rows={6}
+              onChange={(value) => handleInputChange('main-body', value)}
             />
           </div>
 
