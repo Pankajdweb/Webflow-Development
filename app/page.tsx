@@ -1,17 +1,32 @@
 'use client';
 
-import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import EditItemModal from "./components/EditItemModal";
 
 async function getCollectionItems() {
-  const res = await fetch(`http://localhost:3000/api/collection/6835ac0e320162939cd9c8d1`, { cache: 'no-store' });
+  const res = await fetch(`/api/collection`, { cache: 'no-store' });
   if (!res.ok) {
     throw new Error('Failed to fetch collection items');
   }
   return res.json();
+}
+
+// Helper function to format dates consistently
+function formatDate(dateString: string) {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  } catch (error) {
+    return '';
+  }
 }
 
 export default function Home() {
@@ -91,10 +106,10 @@ export default function Home() {
                 )}
                 {item.slug && <p>Slug: {item.slug}</p>}
                 {item.created_on && (
-                  <p>Created: {new Date(item.created_on).toLocaleDateString()}</p>
+                  <p>Created: {formatDate(item.created_on)}</p>
                 )}
                 {item.updated_on && (
-                  <p>Updated: {new Date(item.updated_on).toLocaleDateString()}</p>
+                  <p>Updated: {formatDate(item.updated_on)}</p>
                 )}
               </div>
             ))}
@@ -113,7 +128,6 @@ export default function Home() {
               setSelectedItem(null);
             }}
             onSave={handleSave}
-            collectionId="6835ac0e320162939cd9c8d1"
           />
         )}
       </main>

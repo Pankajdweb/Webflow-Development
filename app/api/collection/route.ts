@@ -1,21 +1,11 @@
 import { NextResponse } from 'next/server';
 
-interface RouteParams {
-  params: Promise<{
-    id: string;
-  }>;
-}
+const COLLECTION_ID = '6835ac0e320162939cd9c8d1';
 
-export async function GET(
-  request: Request,
-  { params }: RouteParams
-) {
+export async function GET() {
   try {
-    const resolvedParams = await params;
-    console.log(resolvedParams.id);
-    
     // Fetch collection metadata
-    const collectionResponse = await fetch(`https://api.webflow.com/v2/collections/${resolvedParams.id}`, {
+    const collectionResponse = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}`, {
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
         'accept-version': '2.0.0'
@@ -23,7 +13,7 @@ export async function GET(
     });
 
     // Fetch collection items
-    const itemsResponse = await fetch(`https://api.webflow.com/v2/collections/${resolvedParams.id}/items`, {
+    const itemsResponse = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}/items`, {
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
         'accept-version': '2.0.0'

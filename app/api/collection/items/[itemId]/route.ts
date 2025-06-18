@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 
+const COLLECTION_ID = '6835ac0e320162939cd9c8d1';
+
 interface RouteParams {
   params: Promise<{
-    id: string;
     itemId: string;
   }>;
 }
@@ -20,7 +21,7 @@ export async function PATCH(
       fieldData: body.fieldData
     };
 
-    const response = await fetch(`https://api.webflow.com/v2/collections/${resolvedParams.id}/items/${resolvedParams.itemId}`, {
+    const response = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}/items/${resolvedParams.itemId}`, {
       method: 'PATCH',
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',

@@ -8,10 +8,9 @@ interface EditItemModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (updatedItem: any) => void;
-  collectionId: string;
 }
 
-export default function EditItemModal({ item, isOpen, onClose, onSave, collectionId }: EditItemModalProps) {
+export default function EditItemModal({ item, isOpen, onClose, onSave }: EditItemModalProps) {
   // Helper function to convert date format for HTML date input
   const formatDateForInput = (dateString: string) => {
     if (!dateString) return '';
@@ -71,7 +70,7 @@ export default function EditItemModal({ item, isOpen, onClose, onSave, collectio
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/collection/${collectionId}/items/${item.id}`, {
+      const response = await fetch(`/api/collection/items/${item.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

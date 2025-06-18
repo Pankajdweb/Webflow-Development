@@ -32,8 +32,7 @@ export default function ScraperPage() {
   useEffect(() => {
     const fetchCollectionStructure = async () => {
       try {
-        const collectionId = "6835ac0e320162939cd9c8d1";
-        const response = await fetch(`/api/collection/${collectionId}`);
+        const response = await fetch(`/api/collection`);
         if (response.ok) {
           const data = await response.json();
           setCollectionFields(data.collection?.fields || []);
@@ -210,9 +209,7 @@ export default function ScraperPage() {
     setCmsMessage("");
 
     try {
-      const collectionId = "6835ac0e320162939cd9c8d1";
-
-      const response = await fetch(`/api/collection/${collectionId}/items`, {
+      const response = await fetch(`/api/collection/items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

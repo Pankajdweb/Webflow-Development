@@ -1,17 +1,9 @@
 import { NextResponse } from 'next/server';
 
-interface RouteParams {
-  params: Promise<{
-    id: string;
-  }>;
-}
+const COLLECTION_ID = '6835ac0e320162939cd9c8d1';
 
-export async function POST(
-  request: Request,
-  { params }: RouteParams
-) {
+export async function POST(request: Request) {
   try {
-    const resolvedParams = await params;
     const body = await request.json();
     
     console.log('Received request body:', JSON.stringify(body, null, 2));
@@ -34,7 +26,7 @@ export async function POST(
     console.log('Sending to Webflow API:', JSON.stringify(webflowBody, null, 2));
 
     // Use the /items/live endpoint to create live items directly
-    const response = await fetch(`https://api.webflow.com/v2/collections/${resolvedParams.id}/items/live`, {
+    const response = await fetch(`https://api.webflow.com/v2/collections/${COLLECTION_ID}/items/live`, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
