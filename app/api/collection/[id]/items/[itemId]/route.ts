@@ -22,7 +22,7 @@ export async function PATCH(
     const response = await fetch(`https://api.webflow.com/v2/collections/${params.id}/items/${params.itemId}`, {
       method: 'PATCH',
       headers: {
-        'Authorization': 'Bearer d8f6b3d6366234de65f89f363c9f110a218b02014496727d73ebe14a675213d9',
+        'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
         'accept-version': '2.0.0',
         'Content-Type': 'application/json'
       },

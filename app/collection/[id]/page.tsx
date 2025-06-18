@@ -92,14 +92,6 @@ export default function CollectionPage({ params }: { params: { id: string } }) {
                 {item.updated_on && (
                   <p>Updated: {new Date(item.updated_on).toLocaleDateString()}</p>
                 )}
-                <p className={styles.status}>
-                  Status: {item._archived ? 'Archived' : 'Active'}
-                  {!item._archived && (
-                    <span className={`${styles.statusBadge} ${item.isLive ? styles.published : styles.draft}`}>
-                      {item.isLive ? 'Published' : 'Draft'}
-                    </span>
-                  )}
-                </p>
               </div>
             ))}
           </div>
