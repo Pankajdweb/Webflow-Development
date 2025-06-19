@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import styles from "../page.module.css";
 import Link from "next/link";
 import RichTextEditor from "../components/RichTextEditor";
+import { GlobalNavbar } from "@/devlink/GlobalNavbar";
+import { FooterComponent } from "@/devlink/FooterComponent";
 
 export default function ScraperPage() {
   const [scrapeUrl, setScrapeUrl] = useState("");
@@ -326,6 +328,7 @@ export default function ScraperPage() {
 
   return (
     <div className={styles.page}>
+      <GlobalNavbar/>
       <main className={styles.main}>
         <Link href="/" className={styles.backButton}>
           ← Back to Collections
@@ -592,6 +595,8 @@ export default function ScraperPage() {
           )}
         </div>
       </main>
+
+      <FooterComponent/>
     </div>
   );
 }

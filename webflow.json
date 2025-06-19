@@ -1,0 +1,14 @@
+{
+  "devlink": {
+    "host": "https://api.webflow.com",
+    "rootDir": "./devlink",
+    "cssModules": true
+  },
+  "telemetry": {
+    "devlink": {
+      "allowTelemetry": true,
+      "lastPrompted": 1750356350884,
+      "version": "1.8.8"
+    }
+  }
+}

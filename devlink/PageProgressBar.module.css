@@ -1,0 +1,19 @@
+.progress-bar {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: auto;
+  z-index: 999;
+
+  width: 100vw;
+  height: 0.875rem;
+
+  pointer-events: none;
+}
+
+.progress-bar-line {
+  width: 0%;
+  height: 100%;
+  background-color: #2bc5a9;
+}

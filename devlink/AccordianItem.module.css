@@ -1,0 +1,344 @@
+.accodian-item {
+  border-bottom: 0.0625rem solid hsla(240, 8.22%, 71.37%, 1.00);
+  cursor: pointer;
+}
+
+.accodian-item_head {
+  display: flex;
+  padding-top: 1.875rem;
+  padding-bottom: 1.875rem;
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+
+  font-family: var(--olds--font-bagoss-exd);
+  color: var(--olds--charcoal-grey);
+  font-size: 1.5rem;
+  line-height: 1.16;
+  font-weight: 600;
+}
+
+.accodian-item_head:where(.w-variant-92331882-15a5-cbad-fe02-6bf8d05661be) {
+  font-size: 1.125rem;
+  line-height: 1.23;
+}
+
+.accodian-item_head:where(.w-variant-b1dffc44-412e-b42f-b94c-e83d9de0a304) {
+  font-size: 1.125rem;
+}
+
+@media screen and (max-width: 767px) {
+  .accodian-item_head {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+.accodian-icon-wrap {
+  position: relative;
+
+  display: flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.accodian-icon-wrap:where(.w-variant-b1dffc44-412e-b42f-b94c-e83d9de0a304) {
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+}
+
+.accodian-icon-plus {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accodian-icon-minus {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accodian_body {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 991px) {
+  .accodian_body {
+    max-width: 100%;
+  }
+}
+
+.accodian-body_content {
+  padding-top: 0rem;
+  padding-bottom: 1.875rem;
+  color: #20282c;
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+.accodian-body_content:where(.w-variant-b1dffc44-412e-b42f-b94c-e83d9de0a304) {
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 767px) {
+  .accodian-body_content {
+    padding-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+.accordian-richtext h2 {
+  margin-top: 3.75rem;
+  font-size: 3rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h2 {
+    font-size: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h2 {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h2 {
+    font-size: 1.75rem;
+  }
+}
+
+.accordian-richtext figure {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 3.75rem;
+  margin-bottom: 0px;
+}
+
+.accordian-richtext img {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 850/500;
+
+  border-radius: 8px;
+
+  object-fit: cover;
+}
+
+.accordian-richtext h1 {
+  font-size: 4.25rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h1 {
+    font-size: 4.87rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h1 {
+    font-size: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h1 {
+    font-size: 2.5rem;
+  }
+}
+
+.accordian-richtext h3 {
+  margin-top: 3.75rem;
+  font-size: 2rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h3 {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h3 {
+    font-size: 1.25rem;
+  }
+}
+
+.accordian-richtext h4 {
+  margin-top: 3.75rem;
+  font-size: 2.5rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h4 {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h4 {
+    font-size: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h4 {
+    font-size: 1.5rem;
+  }
+}
+
+.accordian-richtext h5 {
+  margin-top: 3.75rem;
+  font-size: 2rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h5 {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h5 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h5 {
+    font-size: 1.25rem;
+  }
+}
+
+.accordian-richtext h6 {
+  margin-top: 1.75rem;
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext h6 {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext h6 {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext h6 {
+    font-size: 1.125rem;
+  }
+}
+
+.accordian-richtext p {
+  margin-top: 1.125rem;
+  font-size: 1rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext p {
+    font-size: 1.125rem;
+  }
+}
+
+.accordian-richtext blockquote {
+  max-width: 46rem;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 3.75rem;
+  padding-right: 3rem;
+  padding-left: 3rem;
+
+  border-left-width: 0rem;
+  border-left-color: hsla(0, 0.00%, 88.63%, 0.00);
+
+  background-image: url("https://cdn.prod.website-files.com/6835ac0e320162939cd9c7ad/6835ac0e320162939cd9cb54_quote%20icon.svg");
+  background-position: 0px 25px;
+  background-size: 52px 48px;
+  background-repeat: no-repeat;
+
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext blockquote {
+    background-position: 0px 41px;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .accordian-richtext blockquote {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .accordian-richtext blockquote {
+    padding-top: 2.5rem;
+    padding-right: 1.25rem;
+    padding-left: 2rem;
+    background-size: 28px;
+    font-size: 1.125rem;
+  }
+}
+
+.accordian-richtext li {
+  padding-left: 0rem;
+  background-image: none;
+}
+
+@media screen and (min-width: 1920px) {
+  .accordian-richtext li {
+    font-size: 1.125rem;
+  }
+}
+
+.accordian-richtext ul {
+  margin-top: 1.125rem;
+  padding-left: 1.5rem;
+  grid-column-gap: 0.25rem;
+  grid-row-gap: 0.25rem;
+  list-style-type: square;
+}
+
+.accordian-richtext a {
+  color: var(--main-color--eco-teal);
+  text-decoration: underline;
+}
+
+.accordian-richtext ol {
+  list-style-type: lower-roman;
+}

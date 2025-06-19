@@ -1,0 +1,54 @@
+"use client";
+
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
+export * as _Builtin from "./_Builtin";
+export * from "./devlinkContext";
+export * from "./interactions";
+export * from "./utils";
+export * from "./devlink";
+export * from "./AccordianItem";
+export * from "./AccordianWithImage";
+export * from "./ArticleCard";
+export * from "./BluePrimaryButton";
+export * from "./ContactWrapper";
+export * from "./DetailCard";
+export * from "./DevLinkProvider";
+export * from "./EcommerseNav";
+export * from "./FooterComponent";
+export * from "./FooterOne";
+export * from "./FooterOneBackup";
+export * from "./FooterThree";
+export * from "./FooterTwo";
+export * from "./GlobalButton";
+export * from "./GlobalNavbar";
+export * from "./GlobalNavbarTest";
+export * from "./GlobalStyles";
+export * from "./ImageComponent1";
+export * from "./MarqueeItem";
+export * from "./NavOneBackup";
+export * from "./NavThree";
+export * from "./NavTwo";
+export * from "./PageProgressBar";
+export * from "./PopularArticle";
+export * from "./ProcessSteps";
+export * from "./SecondaryButton";
+export * from "./SecThankyou";
+export * from "./ServiceAboutr";
+export * from "./ServiceFaq";
+export * from "./ServiceHero";
+export * from "./ServiceInfoItem";
+export * from "./ServiceInformation";
+export * from "./ServiceItem";
+export * from "./ServiceLine";
+export * from "./ServiceWithNumber";
+export * from "./ServiceWithPointItem";
+export * from "./SolutionBox";
+export * from "./TeamMemberItem";
+export * from "./TeamMemberItemRichText";
+export * from "./TeamWrapper";
+export * from "./TestimonialCard";
+export * from "./TestimonialContent";
+export * from "./Trustpilot";

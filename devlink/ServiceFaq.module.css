@@ -1,0 +1,194 @@
+.sec_service-faq {
+  position: relative;
+  padding-top: 4.4rem;
+  padding-bottom: 4.4rem;
+}
+
+.faq-shadow {
+  position: absolute;
+  left: auto;
+  top: 20%;
+  right: -5rem;
+  bottom: auto;
+
+  width: 17rem;
+  aspect-ratio: 1/1;
+
+  border-radius: 100%;
+
+  background-color: var(--main-color--eco-teal);
+
+  opacity: 0.5;
+  filter: blur(150px);
+}
+
+@media screen and (max-width: 767px) {
+  .faq-shadow {
+    top: 28%;
+    right: -3rem;
+    width: 8rem;
+    filter: blur(100px);
+  }
+}
+
+.global_container {
+  width: 100%;
+  max-width: 85rem;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 0.9375rem;
+  padding-left: 0.9375rem;
+}
+
+.container-medium {
+  max-width: 70rem;
+}
+
+.global_container.gap {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.service_faq-header {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1.125rem;
+  grid-row-gap: 1.125rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .service_faq-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    grid-column-gap: 1.125rem;
+    grid-row-gap: 1.125rem;
+  }
+}
+
+.overflow_hidden {
+  overflow: hidden;
+}
+
+.heading-stye-h5-32-40 {
+  font-family: var(--olds--font-bagoss-exd);
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+@media screen and (min-width: 1920px) {
+  .heading-stye-h5-32-40 {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .heading-stye-h5-32-40 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .heading-stye-h5-32-40 {
+    font-size: 1.25rem;
+  }
+}
+
+.heading-stye-h5-32-40.font-weight-300 {
+  font-family: var(--olds--font-bagoss-std);
+  font-weight: 400;
+}
+
+.heading-stye-h5-32-40.color-eco-teal {
+  color: var(--main-color--eco-teal);
+}
+
+.typo-r-16-18 {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@media screen and (min-width: 1920px) {
+  .typo-r-16-18 {
+    font-size: 1.125rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .typo-r-16-18 {
+    font-size: 1rem;
+  }
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.typo-r-16-18.font-weight-500.grey-color {
+  color: var(--main-color--charcoal-grey-600);
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.typo-r-16-18.width {
+  max-width: 50.2rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .typo-r-16-18.width {
+    max-width: 52.3rem;
+  }
+}
+
+.typo-r-16-18.fomt-weight-300 {
+  font-weight: 300;
+}
+
+.typo-r-16-18.fomt-weight-300.width {
+  max-width: 46.6rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .typo-r-16-18.fomt-weight-300.width {
+    max-width: 52.4rem;
+  }
+}
+
+.change-color-white {
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+.typo-r-16-18.color-grey {
+  color: var(--main-color--charcoal-grey-100);
+}
+
+.service-faq_list {
+  margin-top: 4.25rem;
+}
+
+@media screen and (max-width: 767px) {
+  .service-faq_list {
+    margin-top: 2.5rem;
+  }
+}
+
+.service-btn-wrap {
+  display: flex;
+  margin-top: 4.25rem;
+}
+
+@media screen and (max-width: 767px) {
+  .service-btn-wrap {
+    margin-top: 2.5rem;
+  }
+}

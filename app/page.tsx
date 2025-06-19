@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
 import styles from "./page.module.css";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import EditItemModal from "./components/EditItemModal";
+import { GlobalNavbar } from "@/devlink/GlobalNavbar";
+import { FooterComponent } from "@/devlink/FooterComponent";
+import { GlobalButton } from "@/devlink/GlobalButton";
 
 async function getCollectionItems() {
-  const res = await fetch(`/api/collection`, { cache: 'no-store' });
+  const res = await fetch(`/api/collection`, { cache: "no-store" });
   if (!res.ok) {
-    throw new Error('Failed to fetch collection items');
+    throw new Error("Failed to fetch collection items");
   }
   return res.json();
 }
@@ -17,15 +20,15 @@ async function getCollectionItems() {
 function formatDate(dateString: string) {
   try {
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return '';
-    
+    if (isNaN(date.getTime())) return "";
+
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
     return `${year}-${month}-${day}`;
   } catch (error) {
-    return '';
+    return "";
   }
 }
 
@@ -41,7 +44,7 @@ export default function Home() {
         const result = await getCollectionItems();
         setData(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -58,9 +61,9 @@ export default function Home() {
   const handleSave = (updatedItem: any) => {
     setData((prev: any) => ({
       ...prev,
-      items: prev.items.map((item: any) => 
+      items: prev.items.map((item: any) =>
         item.id === updatedItem.id ? updatedItem : item
-      )
+      ),
     }));
   };
 
@@ -74,33 +77,52 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+        <GlobalNavbar />
       <main className={styles.main}>
+      
 
-        
         <div className={styles.navigation}>
-          <Link href="/scraper" className={styles.scraperLink}>
-            🕷️ Web Scraper
-          </Link>
+        <GlobalButton
+    buttonLink={{
+      href: "/scraper"
+    }}
+    buttonText="🕷️ Web Scraper"
+  />
         </div>
-        
+
         <div className={styles.apiData}>
-          <h2>{data.collection?.displayName || 'Grants Collection'}</h2>
+          <h4>{data.collection?.displayName || "Grants Collection"}</h4>
           <div className={styles.items}>
             {data.items?.map((item: any) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className={styles.item}
                 onClick={() => handleItemClick(item)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
-                <h3>{item.fieldData?.name || item.name || item.displayName || 'Untitled'}</h3>
-                {item.fieldData?.["faq-answer"] && <p>FAQ Answer: {item.fieldData["faq-answer"]}</p>}
-                {item.fieldData?.summary && <p>Summary: {item.fieldData?.summary}</p>}
+                <h6>
+                  {item.fieldData?.name ||
+                    item.name ||
+                    item.displayName ||
+                    "Untitled"}
+                </h6>
+                {item.fieldData?.["faq-answer"] && (
+                  <p>FAQ Answer: {item.fieldData["faq-answer"]}</p>
+                )}
+                {item.fieldData?.summary && (
+                  <p>Summary: {item.fieldData?.summary}</p>
+                )}
                 {item.fieldData?.["ready-to-publish"] !== undefined && (
                   <p className={styles.readyStatus}>
-                    Ready To Publish: 
-                    <span className={`${styles.statusBadge} ${item.fieldData["ready-to-publish"] ? styles.published : styles.draft}`}>
-                      {item.fieldData["ready-to-publish"] ? 'Yes' : 'No'}
+                    Ready To Publish:
+                    <span
+                      className={`${styles.statusBadge} ${
+                        item.fieldData["ready-to-publish"]
+                          ? styles.published
+                          : styles.draft
+                      }`}
+                    >
+                      {item.fieldData["ready-to-publish"] ? "Yes" : "No"}
                     </span>
                   </p>
                 )}
@@ -130,7 +152,11 @@ export default function Home() {
             onSave={handleSave}
           />
         )}
+
+       
       </main>
+
+      <FooterComponent/>
     </div>
   );
 }

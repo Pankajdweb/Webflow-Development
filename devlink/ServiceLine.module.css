@@ -1,0 +1,25 @@
+.service-line {
+  position: absolute;
+  left: 0.9375rem;
+  top: 0px;
+  right: auto;
+  bottom: 0px;
+  z-index: 1;
+
+  width: 2px;
+  height: 80%;
+
+  background-color: var(--main-color--white);
+}
+
+.service-line:where(.w-variant-59125c99-ef89-2625-66d3-b5240c903b82) {
+  background-color: #2bc5a9;
+}
+
+.inner-line {
+  display: none;
+  width: 1.5px;
+  height: 100%;
+  margin-left: -0.5px;
+  background-color: #ed6d10;
+}
