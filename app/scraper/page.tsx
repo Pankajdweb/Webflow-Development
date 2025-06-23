@@ -330,11 +330,12 @@ export default function ScraperPage() {
     <div className={styles.page}>
       <GlobalNavbar/>
       <main className={styles.main}>
+
+
+        <div className={styles.scraperContainer}>
         <Link href="/" className={styles.backButton}>
           ← Back to Collections
         </Link>
-
-        <div className={styles.scraperContainer}>
           {/* Scraping Input Section */}
           <div className={styles.scrapingSection}>
             <h2>Scrape Data from URL</h2>
