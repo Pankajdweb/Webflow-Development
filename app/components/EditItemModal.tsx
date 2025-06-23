@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../page.module.css';
 import RichTextEditor from './RichTextEditor';
 
@@ -44,9 +44,26 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
     'meta-title': item?.fieldData?.['meta-title'] || '',
     'meta-description': item?.fieldData?.['meta-description'] || '',
     url: item?.fieldData?.url || '',
-    order: item?.fieldData?.order || 0
+    order: item?.fieldData?.order || 0,
+    'category-reference': item?.fieldData?.['category-reference'] || '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Fetch categories from the reference collection
+    async function fetchCategories() {
+      try {
+        const response = await fetch('/api/categories');
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        const data = await response.json();
+        setCategories(data.items || []);
+      } catch (err) {
+        setCategories([]);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   if (!isOpen) return null;
 
@@ -128,8 +145,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
-
-
           <div className={styles.formGroup}>
             <label htmlFor="open-date">Opening Date:</label>
             <input
@@ -185,9 +200,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
-
-
-
           <div className={styles.formGroup}>
             <label htmlFor="main-body">Grants Body:</label>
             <RichTextEditor
@@ -195,8 +207,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
               onChange={(value) => handleInputChange('main-body', value)}
             />
           </div>
-
-
 
           <div className={styles.formGroup}>
             <label htmlFor="order">Order (for sorting):</label>
@@ -211,8 +221,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
           
-
-
           <div className={styles.formGroup}>
             <label htmlFor="meta-title">Meta Title:</label>
             <input
@@ -235,8 +243,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
-
-          
           <div className={styles.formGroup}>
             <label htmlFor="grants-thumbnail-image">Grants Thumbnail Image URL:</label>
             <input
@@ -248,8 +254,6 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
             />
           </div>
 
-
-          
           <div className={styles.formGroup}>
             <label htmlFor="url">URL:</label>
             <input
@@ -259,6 +263,21 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
               onChange={(e) => handleInputChange('url', e.target.value)}
               className={styles.formInput}
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="category-reference">Category Reference:</label>
+            <select
+              id="category-reference"
+              value={formData['category-reference']}
+              onChange={e => handleInputChange('category-reference', e.target.value)}
+              className={styles.formInput}
+            >
+              <option value="">Select a category</option>
+              {categories.map((cat: any) => (
+                <option key={cat.id} value={cat.id}>{cat.fieldData?.name || cat.name || cat.slug || cat.id}</option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.formGroup}>
