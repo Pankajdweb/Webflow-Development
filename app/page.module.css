@@ -472,13 +472,10 @@ a.secondary {
 }
 
 .saveButton {
-  background: #3b82f6;
+  background: #14a68e;
   color: white;
 }
 
-.saveButton:hover:not(:disabled) {
-  background: #2563eb;
-}
 
 .saveButton:disabled {
   background: #9ca3af;
@@ -537,13 +534,9 @@ a.secondary {
     background: #4b5563;
   }
 
-  .saveButton {
-    background: #60a5fa;
-  }
+ 
 
-  .saveButton:hover:not(:disabled) {
-    background: #3b82f6;
-  }
+ 
 
   .switchLabel {
     color: #f9fafb;
@@ -648,7 +641,7 @@ a.secondary {
 
 .scrapeButton {
   padding: 0.75rem 1.5rem;
-  background: #3b82f6;
+  background: #14a68e;
   color: white;
   border: none;
   border-radius: 6px;
@@ -659,7 +652,7 @@ a.secondary {
 }
 
 .scrapeButton:hover:not(:disabled) {
-  background: #2563eb;
+  background: #14a68e;
   transform: translateY(-1px);
 }
 
@@ -780,7 +773,7 @@ a.secondary {
 
 .sendToCMSButton {
   padding: 1rem 2rem;
-  background: #059669;
+  background: #14a68e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -789,6 +782,7 @@ a.secondary {
   cursor: pointer;
   transition: all 0.2s ease;
   width: 100%;
+  margin-top: 2rem;
 }
 
 .sendToCMSButton:hover:not(:disabled) {

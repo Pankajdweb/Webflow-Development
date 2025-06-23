@@ -564,7 +564,6 @@ export default function ScraperPage() {
               </div>
 
               {/* Send to CMS Button */}
-              <div className={styles.cmsSection}>
                 <button
                   onClick={handleSendToCMS}
                   className={styles.sendToCMSButton}
@@ -577,7 +576,6 @@ export default function ScraperPage() {
                     {cmsMessage}
                   </p>
                 )}
-              </div>
             </div>
           )}
           {/* Debug Collection Fields */}
