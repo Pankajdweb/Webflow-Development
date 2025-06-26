@@ -126,6 +126,20 @@ export default function Home() {
                     </span>
                   </p>
                 )}
+                {typeof item.isDraft !== 'undefined' && (
+                  <p className={styles.readyStatus}>
+                    Draft:
+                    <span
+                      className={`${styles.statusBadge} ${
+                        item.isDraft
+                          ? styles.draft
+                          : styles.published
+                      }`}
+                    >
+                      {item.isDraft ? "Yes" : "No"}
+                    </span>
+                  </p>
+                )}
                 {item.slug && <p>Slug: {item.slug}</p>}
                 {item.created_on && (
                   <p>Created: {formatDate(item.created_on)}</p>
