@@ -109,20 +109,20 @@ export default function Home() {
                 {item.fieldData?.["faq-answer"] && (
                   <p>FAQ Answer: {item.fieldData["faq-answer"]}</p>
                 )}
-                {item.fieldData?.summary && (
-                  <p>Summary: {item.fieldData?.summary}</p>
+                {item.fieldData?.['client-stories-summary'] && (
+                  <p>Summary: {item.fieldData['client-stories-summary']}</p>
                 )}
-                {item.fieldData?.["ready-to-publish"] !== undefined && (
+                {typeof item.isArchived !== 'undefined' && (
                   <p className={styles.readyStatus}>
-                    Ready To Publish:
+                    Archived:
                     <span
                       className={`${styles.statusBadge} ${
-                        item.fieldData["ready-to-publish"]
+                        item.isArchived
                           ? styles.published
                           : styles.draft
                       }`}
                     >
-                      {item.fieldData["ready-to-publish"] ? "Yes" : "No"}
+                      {item.isArchived ? "Yes" : "No"}
                     </span>
                   </p>
                 )}

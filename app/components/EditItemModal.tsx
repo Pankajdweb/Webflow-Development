@@ -44,7 +44,8 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
     'meta-description': item?.fieldData?.['meta-description'] || '',
     'url-5': item?.fieldData?.['url-5'] || '',
     order: item?.fieldData?.order || 0,
-   
+    isArchived: typeof item?.isArchived === 'boolean' ? item.isArchived : false,
+    'category-reference-2': item?.fieldData?.['category-reference-2'] || '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -84,13 +85,16 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
     setIsLoading(true);
 
     try {
+      // Remove isArchived from fieldData
+      const { isArchived, ...fieldDataWithoutIsArchived } = formData;
       const response = await fetch(`/api/collection/items/${item.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fieldData: formData
+          isArchived: formData.isArchived,
+          fieldData: fieldDataWithoutIsArchived
         }),
       });
 
@@ -264,6 +268,65 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
               min="0"
               step="1"
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="category-reference-2">Category Reference:</label>
+            <select
+              id="category-reference-2"
+              value={formData['category-reference-2']}
+              onChange={e => handleInputChange('category-reference-2', e.target.value)}
+              className={styles.formInput}
+            >
+              <option value="">Select a category</option>
+              {categories.map((cat: any) => (
+                <option key={cat.id} value={cat.id}>{cat.fieldData?.name || cat.name || cat.slug || cat.id}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup} style={{ border: '2px solid #f59e42', borderRadius: 8, padding: 12, background: '#fffbe6', marginBottom: 24 }}>
+            <label htmlFor="isArchived" className={styles.switchLabel} style={{ fontWeight: 'bold', color: !formData.isArchived ? '#14a68e' : '#b45309', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <svg width="20" height="20" fill={!formData.isArchived ? '#14a68e' : '#f59e42'} viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.75 11.25a.75.75 0 01-1.5 0v-1.5a.75.75 0 011.5 0v1.5zm0-4.5a.75.75 0 01-1.5 0V7a.75.75 0 011.5 0v1.75z"/></svg>
+                {!formData.isArchived ? 'Live (Switch off to archive this item)' : 'Archived (Switch on to make it live)'}
+              </span>
+              <div className={styles.switchContainer}>
+                <input
+                  type="checkbox"
+                  id="isArchived"
+                  checked={!formData.isArchived}
+                  onChange={(e) => handleSwitchChange('isArchived', !e.target.checked)}
+                  className={styles.switchInput}
+                  disabled={isLoading}
+                />
+                <label htmlFor="isArchived" className={styles.switchToggle}>
+                  <span className={styles.switchSlider}></span>
+                </label>
+              </div>
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: 8 }}>
+              <span style={{
+                fontWeight: 600,
+                color: !formData.isArchived ? '#14a68e' : '#f59e42',
+                background: !formData.isArchived ? '#e6f9f4' : '#fff7ed',
+                borderRadius: 6,
+                padding: '2px 12px',
+                fontSize: '0.95rem',
+                letterSpacing: 1,
+                minWidth: 48,
+                textAlign: 'center',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
+              }}>
+                {!formData.isArchived ? 'ON (Live)' : 'OFF (Archived)'}
+              </span>
+            </div>
+            <div style={{ color: !formData.isArchived ? '#14a68e' : '#b45309', fontSize: '0.9rem', marginTop: 6 }}>
+              {!formData.isArchived
+                ? <span><strong>Active:</strong> This item is <b>live</b> and visible in all lists.</span>
+                : <span><strong>Note:</strong> If toggled off, this item will be <b>archived</b> and hidden from live lists.</span>
+              }
+            </div>
           </div>
 
         </div>
