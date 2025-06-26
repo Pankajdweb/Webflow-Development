@@ -18,7 +18,7 @@ export async function PATCH(
     // Prepare the request body for Webflow API
     const webflowBody: any = {
       fieldData: body.fieldData,
-      isArchived: false,
+      isArchived: true,
       isDraft: false
     };
 
