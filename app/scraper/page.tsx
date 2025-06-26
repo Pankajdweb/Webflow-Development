@@ -240,7 +240,7 @@ export default function ScraperPage() {
           fieldData: {
             name: scrapedData.title || "Scraped Content",
             "client-stories-summary": scrapedData.shortDescription || "No description available",
-            "ready-to-publish": false,
+   
             "opens": scrapedData.openingDate,
             "closes": scrapedData.closingDate,
             "deadline-text": scrapedData.duration,

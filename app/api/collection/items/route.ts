@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     const webflowBody: any = {
       fieldData: body.fieldData,
       isArchived: false,
-      isDraft: false
+      isDraft: true
     };
 
     console.log('Sending to Webflow API:', JSON.stringify(webflowBody, null, 2));
