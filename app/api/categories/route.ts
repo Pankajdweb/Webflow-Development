@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-
-const CATEGORY_COLLECTION_ID = '68595060392aba7fc8fca05b';
+import { AUTH_TOKEN, CATEGORY_COLLECTION_ID } from '../../../config';
 
 export async function GET() {
   try {
     // Fetch category items from Webflow
     const response = await fetch(`https://api.webflow.com/v2/collections/${CATEGORY_COLLECTION_ID}/items`, {
       headers: {
-        'Authorization': 'Bearer 1170be024f7d8c57831207c329a081b478cd9126d9297881e4c10653d0ab8b03',
+        'Authorization': `Bearer ${AUTH_TOKEN}`,
         'accept-version': '2.0.0'
       }
     });

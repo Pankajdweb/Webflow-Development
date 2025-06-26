@@ -32,20 +32,19 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
 
   const [formData, setFormData] = useState({
     name: item?.fieldData?.name || item?.name || '',
-    summary: item?.fieldData?.summary || '',
-    'ready-to-publish': item?.fieldData?.['ready-to-publish'] || false,
-    'open-date': formatDateForInput(item?.fieldData?.['open-date'] || ''),
-    'close-date': formatDateForInput(item?.fieldData?.['close-date'] || ''),
-    duration: item?.fieldData?.duration || '',
+    'client-stories-summary': item?.fieldData?.['client-stories-summary'] || '',
+    opens: formatDateForInput(item?.fieldData?.['opens'] || ''),
+    closes: formatDateForInput(item?.fieldData?.['closes'] || ''),
+    'deadline-text': item?.fieldData?.['deadline-text'] || '',
     'funding-body': item?.fieldData?.['funding-body'] || '',
     'award-value': item?.fieldData?.['award-value'] || '',
-    'grants-thumbnail-image': item?.fieldData?.['grants-thumbnail-image'] || '',
-    'main-body': item?.fieldData?.['main-body'] || '',
+    'client-stories-thumbnail-image': item?.fieldData?.['client-stories-thumbnail-image'] || '',
+    'client-stories-body': item?.fieldData?.['client-stories-body'] || '',
     'meta-title': item?.fieldData?.['meta-title'] || '',
     'meta-description': item?.fieldData?.['meta-description'] || '',
-    url: item?.fieldData?.url || '',
+    'url-5': item?.fieldData?.['url-5'] || '',
     order: item?.fieldData?.order || 0,
-    'category-reference': item?.fieldData?.['category-reference'] || '',
+   
   });
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -96,7 +95,9 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update item');
+        const errorText = await response.text();
+        console.error('Failed to update item:', response.status, errorText);
+        throw new Error(`Failed to update item: ${response.status} ${errorText}`);
       }
 
       const updatedItem = await response.json();
@@ -135,45 +136,34 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="summary">Short Description:</label>
+            <label htmlFor="client-stories-summary">Short Description:</label>
             <textarea
-              id="summary"
-              value={formData.summary}
-              onChange={(e) => handleInputChange('summary', e.target.value)}
+              id="client-stories-summary"
+              value={formData['client-stories-summary']}
+              onChange={(e) => handleInputChange('client-stories-summary', e.target.value)}
               className={styles.formTextarea}
               rows={3}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="open-date">Opening Date:</label>
+            <label htmlFor="opens">Opening Date:</label>
             <input
               type="date"
-              id="open-date"
-              value={formData['open-date']}
-              onChange={(e) => handleInputChange('open-date', e.target.value)}
+              id="opens"
+              value={formData['opens']}
+              onChange={(e) => handleInputChange('opens', e.target.value)}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="close-date">Closing Date:</label>
+            <label htmlFor="closes">Closing Date:</label>
             <input
               type="date"
-              id="close-date"
-              value={formData['close-date']}
-              onChange={(e) => handleInputChange('close-date', e.target.value)}
-              className={styles.formInput}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="duration">Duration:</label>
-            <input
-              type="text"
-              id="duration"
-              value={formData.duration}
-              onChange={(e) => handleInputChange('duration', e.target.value)}
+              id="closes"
+              value={formData['closes']}
+              onChange={(e) => handleInputChange('closes', e.target.value)}
               className={styles.formInput}
             />
           </div>
@@ -201,26 +191,24 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="main-body">Grants Body:</label>
-            <RichTextEditor
-              value={formData['main-body']}
-              onChange={(value) => handleInputChange('main-body', value)}
+            <label htmlFor="client-stories-thumbnail-image">Thumbnail Image URL:</label>
+            <input
+              type="url"
+              id="client-stories-thumbnail-image"
+              value={formData['client-stories-thumbnail-image']}
+              onChange={(e) => handleInputChange('client-stories-thumbnail-image', e.target.value)}
+              className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="order">Order (for sorting):</label>
-            <input
-              type="number"
-              id="order"
-              value={formData.order}
-              onChange={(e) => handleInputChange('order', e.target.value)}
-              className={styles.formInput}
-              min="0"
-              step="1"
+            <label htmlFor="client-stories-body">Main Body:</label>
+            <RichTextEditor
+              value={formData['client-stories-body']}
+              onChange={(value) => handleInputChange('client-stories-body', value)}
             />
           </div>
-          
+
           <div className={styles.formGroup}>
             <label htmlFor="meta-title">Meta Title:</label>
             <input
@@ -244,69 +232,49 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="grants-thumbnail-image">Grants Thumbnail Image URL:</label>
+            <label htmlFor="url-5">URL:</label>
             <input
               type="url"
-              id="grants-thumbnail-image"
-              value={formData['grants-thumbnail-image']}
-              onChange={(e) => handleInputChange('grants-thumbnail-image', e.target.value)}
+              id="url-5"
+              value={formData['url-5']}
+              onChange={(e) => handleInputChange('url-5', e.target.value)}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="url">URL:</label>
+            <label htmlFor="deadline-text">Duration:</label>
             <input
-              type="url"
-              id="url"
-              value={formData.url}
-              onChange={(e) => handleInputChange('url', e.target.value)}
+              type="text"
+              id="deadline-text"
+              value={formData['deadline-text']}
+              onChange={(e) => handleInputChange('deadline-text', e.target.value)}
               className={styles.formInput}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="category-reference">Category Reference:</label>
-            <select
-              id="category-reference"
-              value={formData['category-reference']}
-              onChange={e => handleInputChange('category-reference', e.target.value)}
+            <label htmlFor="order">Order (for sorting):</label>
+            <input
+              type="number"
+              id="order"
+              value={formData.order}
+              onChange={(e) => handleInputChange('order', e.target.value)}
               className={styles.formInput}
-            >
-              <option value="">Select a category</option>
-              {categories.map((cat: any) => (
-                <option key={cat.id} value={cat.id}>{cat.fieldData?.name || cat.name || cat.slug || cat.id}</option>
-              ))}
-            </select>
+              min="0"
+              step="1"
+            />
           </div>
 
-          <div className={styles.formGroup}>
-            <label className={styles.switchLabel}>
-              <span>Ready To Publish:</span>
-              <div className={styles.switchContainer}>
-                <input
-                  type="checkbox"
-                  id="ready-to-publish"
-                  checked={formData['ready-to-publish']}
-                  onChange={(e) => handleSwitchChange('ready-to-publish', e.target.checked)}
-                  className={styles.switchInput}
-                  disabled={isLoading}
-                />
-                <label htmlFor="ready-to-publish" className={styles.switchToggle}>
-                  <span className={styles.switchSlider}></span>
-                </label>
-              </div>
-            </label>
-          </div>
         </div>
         
         <div className={styles.modalFooter}>
           <button onClick={onClose} className={styles.cancelButton}>
-            Cancel
-          </button>
+          Cancel
+          </button> 
           <button 
             onClick={handleSave} 
-            className={styles.saveButton}
+             className={styles.saveButton}
             disabled={isLoading}
           >
             {isLoading ? 'Saving...' : 'Save Changes'}

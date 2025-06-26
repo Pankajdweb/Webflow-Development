@@ -239,22 +239,22 @@ export default function ScraperPage() {
         body: JSON.stringify({
           fieldData: {
             name: scrapedData.title || "Scraped Content",
-            summary: scrapedData.shortDescription || "No description available",
+            "client-stories-summary": scrapedData.shortDescription || "No description available",
             "ready-to-publish": false,
-            "open-date": scrapedData.openingDate,
-            "close-date": scrapedData.closingDate,
-            duration: scrapedData.duration,
+            "opens": scrapedData.openingDate,
+            "closes": scrapedData.closingDate,
+            "deadline-text": scrapedData.duration,
             "funding-body": scrapedData.fundingBody,
             "award-value": scrapedData.awardValue,
-            "grants-thumbnail-image": scrapedData.imageUrl,
-            "main-body": scrapedData.mainBody,
+            "client-stories-thumbnail-image": scrapedData.imageUrl,
+            "client-stories-body": scrapedData.mainBody,
             "meta-title": scrapedData.title || "Scraped Content",
             "meta-description": (
               scrapedData.shortDescription || "No description available"
             )
               .replace(/\n/g, " ")
               .trim(),
-            url: scrapedData.url,
+            "url-5": scrapedData.url,
             order: scrapedData.order,
           },
         }),
