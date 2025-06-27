@@ -442,13 +442,20 @@ a.secondary {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .modalFooter {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  flex-direction: column;
   padding: 1rem 1.5rem 1.5rem 1.5rem;
   border-top: 1px solid #e5e7eb;
+}
+
+.modalFooterrow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0rem 1.5rem 0rem 1.5rem;
 }
 
 .cancelButton,
@@ -1076,7 +1083,7 @@ a.secondary {
 }
 
 .editor a {
-  color: #007bff;
+  color: #3b82f6;
   text-decoration: underline;
 }
 
@@ -1119,4 +1126,45 @@ a.secondary {
   .editor a {
     color: #4dabf7;
   }
+}
+
+/* Date Badge Styles */
+.dateBadgeContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dateBadge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+}
+
+.dateBadge.published {
+  background: #10b981;
+}
+
+.dateBadge.updated {
+  background: #3b82f6;
+}
+
+.dateBadge.created {
+  background: #8b5cf6;
+}
+
+.dateText {
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.relativeTime {
+  font-size: 0.8rem;
+  color: #000000;
 }

@@ -49,6 +49,7 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
   });
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [updateMode, setUpdateMode] = useState<'staging' | 'live'>('staging');
 
   useEffect(() => {
     // Fetch categories from the reference collection
@@ -94,7 +95,8 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
         },
         body: JSON.stringify({
           isArchived: formData.isArchived,
-          fieldData: fieldDataWithoutIsArchived
+          fieldData: fieldDataWithoutIsArchived,
+          updateMode: updateMode
         }),
       });
 
@@ -332,6 +334,88 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
         </div>
         
         <div className={styles.modalFooter}>
+          <div className={styles.modalFooterrow}>
+            <div className={styles.formGroup} style={{ marginBottom: 16, border: '2px solid #e5e7eb', borderRadius: 8, padding: 16, background: '#f9fafb' }}>
+              <label style={{ fontWeight: 'bold', marginBottom: 12, display: 'block', color: '#374151' }}>
+                Update Mode:
+              </label>
+              <div style={{ display: 'flex', gap: 12 }}>
+                <label 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 8, 
+                    cursor: 'pointer',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    border: `2px solid ${updateMode === 'staging' ? '#059669' : '#e5e7eb'}`,
+                    background: updateMode === 'staging' ? '#f0fdf4' : '#ffffff',
+                    transition: 'all 0.2s ease',
+                    minWidth: '180px',
+                    justifyContent: 'center'
+                  }}
+                  onClick={() => setUpdateMode('staging')}
+                >
+                  <input
+                    type="radio"
+                    name="updateMode"
+                    value="staging"
+                    checked={updateMode === 'staging'}
+                    onChange={(e) => setUpdateMode(e.target.value as 'staging' | 'live')}
+                    style={{ 
+                      margin: 0,
+                      width: '18px',
+                      height: '18px',
+                      accentColor: '#059669'
+                    }}
+                  />
+                  <span style={{ fontWeight: 600, color: updateMode === 'staging' ? '#059669' : '#6b7280' }}>
+                    🔄 Staging
+                  </span>
+                </label>
+                <label 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 8, 
+                    cursor: 'pointer',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    border: `2px solid ${updateMode === 'live' ? '#dc2626' : '#e5e7eb'}`,
+                    background: updateMode === 'live' ? '#fef2f2' : '#ffffff',
+                    transition: 'all 0.2s ease',
+                    minWidth: '180px',
+                    justifyContent: 'center'
+                  }}
+                  onClick={() => setUpdateMode('live')}
+                >
+                  <input
+                    type="radio"
+                    name="updateMode"
+                    value="live"
+                    checked={updateMode === 'live'}
+                    onChange={(e) => setUpdateMode(e.target.value as 'staging' | 'live')}
+                    style={{ 
+                      margin: 0,
+                      width: '18px',
+                      height: '18px',
+                      accentColor: '#dc2626'
+                    }}
+                  />
+                  <span style={{ fontWeight: 600, color: updateMode === 'live' ? '#dc2626' : '#6b7280' }}>
+                    🚀 Live
+                  </span>
+                </label>
+              </div>
+              <div style={{ marginTop: 12, fontSize: '0.9rem', color: '#6b7280', padding: '8px 12px', background: '#ffffff', borderRadius: '6px', border: '1px solid #e5e7eb' }}>
+                {updateMode === 'staging' 
+                  ? '✅ Safe: Changes will be applied to the staging environment first for testing.'
+                  : '⚠️ Direct: Changes will be applied directly to the live environment. Use with caution!'
+                }
+              </div>
+            </div>
+          </div>
+          <div className={styles.modalFooterrow}>
           <button onClick={onClose} className={styles.cancelButton}>
           Cancel
           </button> 
@@ -340,8 +424,9 @@ export default function EditItemModal({ item, isOpen, onClose, onSave }: EditIte
              className={styles.saveButton}
             disabled={isLoading}
           >
-            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading ? 'Saving...' : `Save Changes (${updateMode === 'staging' ? 'Staging' : 'Live'})`}
           </button>
+          </div>
         </div>
       </div>
     </div>

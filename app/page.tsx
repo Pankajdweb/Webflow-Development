@@ -25,8 +25,56 @@ function formatDate(dateString: string) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  } catch (error) {
+    return "";
+  }
+}
+
+// Helper function to get relative time
+function getRelativeTime(dateString: string) {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "";
+
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} second${diffInSeconds !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minute${diffInMinutes !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+      return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) {
+      return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    if (diffInWeeks < 4) {
+      return `${diffInWeeks} week${diffInWeeks !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths < 12) {
+      return `${diffInMonths} month${diffInMonths !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffInYears = Math.floor(diffInDays / 365);
+    return `${diffInYears} year${diffInYears !== 1 ? 's' : ''} ago`;
   } catch (error) {
     return "";
   }
@@ -93,7 +141,7 @@ export default function Home() {
         <div className={styles.apiData}>
           <h4>{data.collection?.displayName || "Grants Collection"}</h4>
           <div className={styles.items}>
-            {data.items?.map((item: any) => (
+            {data.items?.filter((item: any) => item.isArchived === true).map((item: any) => (
               <div
                 key={item.id}
                 className={styles.item}
@@ -140,18 +188,46 @@ export default function Home() {
                     </span>
                   </p>
                 )}
-                {item.slug && <p>Slug: {item.slug}</p>}
-                {item.created_on && (
-                  <p>Created: {formatDate(item.created_on)}</p>
+                {item.lastPublished && (
+                  <div className={styles.dateBadgeContainer}>
+                    <span className={`${styles.dateBadge} ${styles.published}`}>
+                      📅 Published
+                    </span>
+               
+                    <span className={styles.relativeTime}>
+                      {getRelativeTime(item.lastPublished)}
+                    </span>
+                  </div>
                 )}
-                {item.updated_on && (
-                  <p>Updated: {formatDate(item.updated_on)}</p>
+                {item.lastUpdated && (
+                  <div className={styles.dateBadgeContainer}>
+                    <span className={`${styles.dateBadge} ${styles.updated}`}>
+                      🔄 Updated
+                    </span>
+                 
+                    <span className={styles.relativeTime}>
+                      {getRelativeTime(item.lastUpdated)}
+                    </span>
+                  </div>
                 )}
+                {item.createdOn && (
+                  <div className={styles.dateBadgeContainer}>
+                    <span className={`${styles.dateBadge} ${styles.created}`}>
+                      ✨ Created
+                    </span>
+           
+                    <span className={styles.relativeTime}>
+                      {getRelativeTime(item.createdOn)}
+                    </span>
+                  </div>
+                )}
+           
+      
               </div>
             ))}
           </div>
-          {!data.items && (
-            <p className={styles.error}>No items found in this collection</p>
+          {!data.items?.filter((item: any) => item.isArchived === true).length && (
+            <p className={styles.error}>No archived items found in this collection</p>
           )}
         </div>
 

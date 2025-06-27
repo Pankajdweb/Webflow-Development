@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Prepare the request body for Webflow API
     const webflowBody: any = {
       fieldData: body.fieldData,
-      isArchived: false,
+      isArchived: true,
       isDraft: true
     };
 
