@@ -78,7 +78,7 @@ export default function ScraperPage() {
     setCmsMessage("");
 
     try {
-      const apiKey = "e64f70dfd43ebfe70c0a51a06d38d520";
+      const apiKey = "54cc2b590fe8268e872aafd5e36462dd";
       const proxyUrl = `https://api.scraperapi.com/?api_key=${apiKey}&url=${encodeURIComponent(
         scrapeUrl
       )}`;
